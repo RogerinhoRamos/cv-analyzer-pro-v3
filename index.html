@@ -1,3 +1,4 @@
+<!-- === CORREÇÃO COMPLETA DO INDEX.HTML === -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -5,21 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📊 CV Analyzer Pro - Sistema Completo</title>
     
-    <!-- PDF.js -->
-    <script src="libs/pdf.js"></script>
+    <!-- === BIBLIOTECAS CORRIGIDAS === -->
+    <!-- PDF.js com CDN confiável -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>
-        // Configurar PDF.js worker
+        // Configurar PDF.js worker via CDN
         if (typeof pdfjsLib !== 'undefined') {
-            pdfjsLib.GlobalWorkerOptions.workerSrc = 'libs/pdf.worker.min.js';
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
         }
     </script>
     
-    <!-- Chart.js -->
-    <script src="libs/chart.js"></script>
+    <!-- Chart.js com CDN confiável -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     
-    <!-- jsPDF -->
-    <script src="libs/jspdf.min.js"></script>
+    <!-- jsPDF com CDN confiável -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     
+    <!-- Seus estilos atuais -->
     <style>
         * {
             margin: 0;
@@ -108,43 +111,7 @@
             display: block;
         }
 
-        /* Upload Area */
-        .upload-area {
-            border: 3px dashed #3498db;
-            border-radius: 15px;
-            padding: 40px;
-            text-align: center;
-            margin-bottom: 30px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .upload-area:hover {
-            background: rgba(52, 152, 219, 0.05);
-            border-color: #2980b9;
-        }
-
-        .upload-area.dragover {
-            background: rgba(52, 152, 219, 0.1);
-            border-color: #2980b9;
-            transform: scale(1.02);
-        }
-
-        .upload-icon {
-            font-size: 4em;
-            margin-bottom: 20px;
-        }
-
-        .upload-text {
-            font-size: 1.2em;
-            color: #7f8c8d;
-            margin-bottom: 20px;
-        }
-
-        .file-input {
-            display: none;
-        }
-
+        /* === BOTÕES === */
         .btn {
             background: linear-gradient(135deg, #3498db, #2980b9);
             color: white;
@@ -156,6 +123,7 @@
             transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
+            margin: 5px;
         }
 
         .btn:hover {
@@ -180,69 +148,65 @@
             font-weight: 600;
         }
 
-        .btn.semantic:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(155, 89, 182, 0.4);
-        }
-
         .btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
             transform: none !important;
         }
 
-        .btn:disabled:hover {
-            transform: none !important;
-            box-shadow: none !important;
-        }
-
-        /* Configuração de Vaga */
-        .vaga-config {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+        /* === UPLOAD === */
+        .upload-area {
+            border: 3px dashed #3498db;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
             margin-bottom: 30px;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
 
-        .input-group {
-            margin-bottom: 20px;
+        .upload-area:hover {
+            background: rgba(52, 152, 219, 0.05);
+            border-color: #2980b9;
         }
 
-        .input-group label {
+        .upload-area.dragover {
+            background: rgba(52, 152, 219, 0.1);
+            border-color: #2980b9;
+            transform: scale(1.02);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        /* === LOADING === */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading.show {
             display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #2c3e50;
         }
 
-        .input-group input,
-        .input-group select,
-        .input-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ecf0f1;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: border-color 0.3s ease;
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
         }
 
-        .input-group input:focus,
-        .input-group select:focus,
-        .input-group textarea:focus {
-            outline: none;
-            border-color: #3498db;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .endereco-validado {
-            background: #d4edda;
-            color: #155724;
-            padding: 10px;
-            border-radius: 8px;
-            margin-top: 10px;
-            border-left: 4px solid #28a745;
-        }
-
-        /* Templates */
+        /* === TEMPLATES === */
         .templates-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -291,272 +255,20 @@
             margin-bottom: 15px;
         }
 
-        .template-criterios {
-            font-size: 0.9em;
-            color: #6c757d;
-        }
-
-        /* Editor de Template */
-        .template-editor {
-            background: #f8f9fa;
-            border-radius: 10px;
+        /* === MODO SEMÂNTICO === */
+        .modo-semantico {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
             padding: 20px;
-            margin-top: 20px;
-        }
-
-        .criterio-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px;
-            background: white;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border-left: 4px solid #3498db;
-        }
-
-        .criterio-nome {
-            font-weight: bold;
-            flex: 1;
-        }
-
-        .criterio-controls {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .peso-slider {
-            width: 100px;
-        }
-
-        .peso-value {
-            min-width: 30px;
-            font-weight: bold;
-            color: #3498db;
-        }
-
-        .obrigatorio-checkbox {
-            transform: scale(1.2);
-        }
-
-        /* Progress Bar */
-        .progress-container {
-            background: #ecf0f1;
-            border-radius: 10px;
-            overflow: hidden;
+            border-radius: 12px;
             margin: 20px 0;
-        }
-
-        .progress-bar {
-            height: 20px;
-            background: linear-gradient(90deg, #3498db, #2ecc71);
-            transition: width 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-
-        /* Estatísticas */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 25px;
             text-align: center;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-number {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #3498db;
-            margin-bottom: 10px;
-        }
-
-        .stat-label {
-            color: #7f8c8d;
-            font-size: 1em;
-        }
-
-        /* Rankings */
-        .ranking-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        .ranking-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-
-        .ranking-title {
-            color: #2c3e50;
-            font-size: 1.6em;
-            margin-bottom: 20px;
-            text-align: center;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
-        }
-
-        .candidato-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            margin: 10px 0;
-            background: linear-gradient(90deg, #f8f9fa, #e9ecef);
-            border-radius: 10px;
-            border-left: 4px solid #3498db;
-            transition: all 0.3s ease;
-        }
-
-        .candidato-item:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .candidato-info {
-            flex: 1;
-        }
-
-        .candidato-nome {
-            font-weight: bold;
-            color: #2c3e50;
-            font-size: 1.1em;
-            margin-bottom: 5px;
-        }
-
-        .candidato-detalhes {
-            color: #7f8c8d;
-            font-size: 0.9em;
-            margin-bottom: 3px;
-        }
-
-        .candidato-endereco {
-            color: #6c757d;
-            font-size: 0.8em;
-        }
-
-        .candidato-competencias {
-            color: #2980b9;
-            font-size: 0.8em;
-            font-weight: 500;
-            margin-top: 5px;
-            line-height: 1.3;
-        }
-
-        .candidato-scores {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .score-total {
-            background: #3498db;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 20px;
             font-weight: bold;
             font-size: 1.1em;
+            box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);
         }
 
-        .score-detalhes {
-            font-size: 0.8em;
-            color: #7f8c8d;
-        }
-
-        /* Gráficos */
-        .charts-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        .chart-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-
-        .chart-title {
-            color: #2c3e50;
-            font-size: 1.4em;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        /* Loading */
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 40px;
-        }
-
-        .loading.show {
-            display: block;
-        }
-
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Seleção de Candidatos */
-        .candidato-selecionavel {
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .candidato-selecionavel:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .candidato-incluido {
-            background: #f8fff8;
-            border-color: #2ecc71;
-        }
-
-        .candidato-excluido {
-            background: #fff5f5;
-            border-color: #e74c3c;
-        }
-
-        /* Alertas */
+        /* === ALERTAS === */
         .alert {
             padding: 15px;
             border-radius: 8px;
@@ -576,66 +288,17 @@
             border-left-color: #dc3545;
         }
 
-        .alert.warning {
-            background: #fff3cd;
-            color: #856404;
-            border-left-color: #ffc107;
-        }
-
-        .alert.info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border-left-color: #17a2b8;
-        }
-
-        /* Análise Semântica */
-        .semantic-section {
-            background: linear-gradient(135deg, #f4f1f8, #e8dff5);
-            border-radius: 15px;
-            padding: 25px;
-            margin: 20px 0;
-            border-left: 5px solid #9b59b6;
-        }
-
-        .semantic-title {
-            color: #8e44ad;
-            font-size: 1.4em;
-            font-weight: bold;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .semantic-description {
-            color: #6c5ce7;
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-
-        .semantic-features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .semantic-feature {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 15px;
-            border-radius: 10px;
-            border-left: 3px solid #9b59b6;
-        }
-
-        .semantic-feature strong {
-            color: #8e44ad;
+        .alert.semantic {
+            background: linear-gradient(135deg, #f8f5ff, #f0ebff);
+            color: #4a148c;
+            border-left-color: #9b59b6;
         }
 
         .hidden {
             display: none !important;
         }
 
-        /* Responsive */
+        /* === RESPONSIVO === */
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
@@ -645,27 +308,12 @@
                 font-size: 2em;
             }
 
-            .vaga-config {
-                grid-template-columns: 1fr;
-            }
-
             .tabs {
                 flex-direction: column;
             }
 
             .tab {
                 min-width: auto;
-            }
-
-            .candidato-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-
-            .candidato-scores {
-                align-self: flex-end;
-                flex-direction: row;
             }
         }
     </style>
@@ -677,23 +325,23 @@
             <p>Sistema Inteligente de Análise e Seleção de Candidatos com IA</p>
         </div>
 
+        <!-- === NAVEGAÇÃO SIMPLIFICADA === -->
         <div class="tabs">
             <div class="tab active" onclick="showTab('upload')">📄 Upload PDF</div>
             <div class="tab" onclick="showTab('config')">⚙️ Configuração</div>
             <div class="tab" onclick="showTab('selecao')">👥 Seleção</div>
-            <div class="tab" onclick="showTab('templates')">📋 Templates</div>
-            <div class="tab" onclick="showTab('semantica')">🧠 Análise Semântica</div>
+            <div class="tab" onclick="showTab('templates')">📋 Templates & IA</div>
             <div class="tab" onclick="showTab('analise')">🔍 Análise</div>
             <div class="tab" onclick="showTab('dashboard')">📊 Dashboard</div>
         </div>
 
-        <!-- ABA 1: Upload PDF -->
+        <!-- === ABA 1: UPLOAD === -->
         <div class="tab-content active" id="upload">
             <h2>📄 Upload do PDF com Currículos</h2>
             
             <div class="upload-area" onclick="document.getElementById('pdfFile').click()">
-                <div class="upload-icon">📄</div>
-                <div class="upload-text">
+                <div style="font-size: 4em; margin-bottom: 20px;">📄</div>
+                <div style="font-size: 1.2em; color: #7f8c8d; margin-bottom: 20px;">
                     Clique aqui ou arraste o arquivo PDF com os currículos
                 </div>
                 <button class="btn">📎 Selecionar Arquivo PDF</button>
@@ -701,15 +349,14 @@
             
             <input type="file" id="pdfFile" class="file-input" accept=".pdf">
             
-            <!-- Botão de teste/debug -->
             <div style="text-align: center; margin: 15px 0;">
-                <button class="btn secondary" onclick="testarUpload()" style="font-size: 0.9em;">
-                    🔧 Testar Sistema de Upload
+                <button class="btn secondary" onclick="testarSistema()">
+                    🔧 Testar Sistema
                 </button>
             </div>
             
             <div id="fileInfo" class="hidden">
-                <div class="alert info">
+                <div class="alert success">
                     <strong>📁 Arquivo carregado:</strong> <span id="fileName"></span>
                 </div>
             </div>
@@ -727,43 +374,33 @@
             </div>
         </div>
 
-        <!-- ABA 2: Configuração da Vaga -->
+        <!-- === ABA 2: CONFIGURAÇÃO === -->
         <div class="tab-content" id="config">
             <h2>🎯 Configuração da Vaga</h2>
             
-            <div class="vaga-config">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
                 <div>
-                    <div class="input-group">
-                        <label>🏢 Cargo/Posição</label>
-                        <input type="text" id="cargoVaga" placeholder="Ex: Preparador/Operador CNC Multifuncional">
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #2c3e50;">🏢 Cargo/Posição</label>
+                        <input type="text" id="cargoVaga" placeholder="Ex: Preparador/Operador CNC Multifuncional" style="width: 100%; padding: 12px; border: 2px solid #ecf0f1; border-radius: 8px; font-size: 1em;">
                     </div>
                     
-                    <div class="input-group">
-                        <label>🏭 Empresa</label>
-                        <input type="text" id="empresaVaga" placeholder="Ex: KSB do Brasil Ltda">
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #2c3e50;">🏭 Empresa</label>
+                        <input type="text" id="empresaVaga" placeholder="Ex: KSB do Brasil Ltda" style="width: 100%; padding: 12px; border: 2px solid #ecf0f1; border-radius: 8px; font-size: 1em;">
                     </div>
                     
-                    <div class="input-group">
-                        <label>📍 Localização da Vaga</label>
-                        <input type="text" id="enderecoVaga" placeholder="Ex: Av. Alberto Vollet Sachs, 400 - Jundiaí, SP">
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #2c3e50;">📍 Localização da Vaga</label>
+                        <input type="text" id="enderecoVaga" placeholder="Ex: Av. Alberto Vollet Sachs, 400 - Jundiaí, SP" style="width: 100%; padding: 12px; border: 2px solid #ecf0f1; border-radius: 8px; font-size: 1em;">
                         <button class="btn secondary" style="margin-top: 10px;" onclick="validarEndereco()">📌 Validar Endereço</button>
-                    </div>
-
-                    <div class="input-group">
-                        <label>🗺️ Raio de Abrangência (km)</label>
-                        <select id="raioAbrangencia">
-                            <option value="15">15 km (Região próxima)</option>
-                            <option value="25" selected>25 km (Região metropolitana)</option>
-                            <option value="35">35 km (Região estendida)</option>
-                            <option value="50">50 km (Região ampla)</option>
-                        </select>
                     </div>
                 </div>
                 
                 <div>
-                    <div class="input-group">
-                        <label>⏰ Turno</label>
-                        <select id="turnoVaga">
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #2c3e50;">⏰ Turno</label>
+                        <select id="turnoVaga" style="width: 100%; padding: 12px; border: 2px solid #ecf0f1; border-radius: 8px; font-size: 1em;">
                             <option value="">Selecione o turno</option>
                             <option value="manha">Manhã</option>
                             <option value="tarde">Tarde</option>
@@ -773,19 +410,19 @@
                         </select>
                     </div>
                     
-                    <div class="input-group">
-                        <label>💰 Faixa Salarial (Opcional)</label>
-                        <input type="text" id="salarioVaga" placeholder="Ex: R$ 4.200 - R$ 5.800">
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #2c3e50;">💰 Faixa Salarial (Opcional)</label>
+                        <input type="text" id="salarioVaga" placeholder="Ex: R$ 4.200 - R$ 5.800" style="width: 100%; padding: 12px; border: 2px solid #ecf0f1; border-radius: 8px; font-size: 1em;">
                     </div>
                     
-                    <div class="input-group">
-                        <label>📝 Observações</label>
-                        <textarea id="observacoesVaga" rows="3" placeholder="Ex: Experiência com comandos Fanuc/Siemens obrigatória. VT + VR + Plano de Saúde"></textarea>
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #2c3e50;">📝 Observações</label>
+                        <textarea id="observacoesVaga" rows="3" placeholder="Ex: Experiência com comandos Fanuc/Siemens obrigatória. VT + VR + Plano de Saúde" style="width: 100%; padding: 12px; border: 2px solid #ecf0f1; border-radius: 8px; font-size: 1em;"></textarea>
                     </div>
                 </div>
             </div>
             
-            <div id="enderecoValidado" class="hidden endereco-validado">
+            <div id="enderecoValidado" class="hidden" style="background: #d4edda; color: #155724; padding: 10px; border-radius: 8px; margin-top: 10px; border-left: 4px solid #28a745;">
                 ✅ <strong>Endereço validado:</strong> <span id="enderecoNormalizado"></span>
             </div>
             
@@ -794,11 +431,10 @@
             </div>
         </div>
 
-        <!-- ABA 3: Seleção de Candidatos -->
+        <!-- === ABA 3: SELEÇÃO === -->
         <div class="tab-content" id="selecao">
             <h2>👥 Seleção de Candidatos</h2>
             
-            <!-- Resumo -->
             <div style="background: #f8f9fa; border-radius: 10px; padding: 20px; margin-bottom: 20px; border-left: 4px solid #3498db;">
                 <h3 style="color: #2c3e50; margin-bottom: 15px;">📊 Resumo</h3>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
@@ -810,47 +446,19 @@
                         <span style="font-size: 1.8em; color: #2ecc71; font-weight: bold;" id="candidatosSelecionados">0</span>
                         <div style="color: #7f8c8d;">selecionados para análise</div>
                     </div>
-                    <div>
-                        <span style="font-size: 1.8em; color: #e74c3c; font-weight: bold;" id="candidatosExcluidos">0</span>
-                        <div style="color: #7f8c8d;">excluídos</div>
-                    </div>
                 </div>
             </div>
             
-            <!-- Ferramentas -->
             <div style="background: white; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
                 <h3 style="color: #2c3e50; margin-bottom: 15px;">🔧 Ferramentas de Seleção</h3>
-                
-                <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
+                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
                     <button class="btn" onclick="selecionarTodos()">☑️ Selecionar Todos</button>
                     <button class="btn secondary" onclick="desmarcarTodos()">☐ Desmarcar Todos</button>
-                    <button class="btn secondary" onclick="inverterSelecao()">🔄 Inverter Seleção</button>
-                </div>
-                
-                <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center;">
-                    <div>
-                        <label style="margin-right: 10px;">📍 Filtrar por distância:</label>
-                        <select id="filtroDistancia" onchange="aplicarFiltros()">
-                            <option value="todos">Todos os candidatos</option>
-                            <option value="15">≤ 15km (Muito perto)</option>
-                            <option value="25">≤ 25km (Perto)</option>
-                            <option value="50">≤ 50km (Raio amplo)</option>
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label style="margin-right: 10px;">🔍 Buscar candidato:</label>
-                        <input type="text" id="buscaCandidato" placeholder="Digite o nome..." 
-                               style="padding: 8px; border: 1px solid #ddd; border-radius: 5px; width: 200px;"
-                               oninput="aplicarFiltros()">
-                    </div>
                 </div>
             </div>
             
-            <!-- Lista de Candidatos -->
             <div style="background: white; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
                 <h3 style="color: #2c3e50; margin-bottom: 15px;">📋 Lista de Candidatos</h3>
-                
                 <div id="listaCandidatos" style="max-height: 400px; overflow-y: auto;">
                     <!-- Lista será preenchida dinamicamente -->
                 </div>
@@ -862,127 +470,60 @@
             </div>
         </div>
 
-        <!-- ABA 4: Templates -->
+        <!-- === ABA 4: TEMPLATES & IA === -->
         <div class="tab-content" id="templates">
-            <h2>📋 Selecionar Template de Avaliação</h2>
-			
-			
-			
-			
-			<div class="input-group">
-				<label>📁 Selecionar Perfil de Vaga</label>
-				<select id="seletorTemplate" onchange="carregarTemplateSelecionado()">
-					<option value="criterios_avancados.json">⚙️ Avançado</option>
-					<option value="criterios_operador_cnc.json">👨‍🏭 Operador CNC</option>
-					<option value="criterios_preparador_cnc.json">🛠️ Preparador CNC</option>
-					<option value="criterios_preparador_operador_cnc.json">⚙️ Preparador e Operador CNC</option>
-					<option value="criterios_torno_vertical_cnc.json">🌀 Torno Vertical</option>
-					<option value="criterios_auxiliar_usinagem.json">🔧 Auxiliar/Máquinas Auxiliares</option>
-					<option value="criterios_balanceador.json">⚖️ Balanceador</option>
-				</select>
-			</div>
-
-			
-			
-			
-			
-			
+            <h2>📋 Templates de Avaliação</h2>
             
-            <div class="templates-grid" id="templatesGrid">
-                <!-- Templates serão carregados dinamicamente -->
-            </div>
-            
-            <div class="template-editor hidden" id="templateEditor">
-                <h3>⚙️ Personalizar Critérios</h3>
-                <div id="criteriosEditor">
-                    <!-- Critérios serão carregados dinamicamente -->
-                </div>
+            <!-- === SELETOR DE MODO === -->
+            <div style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 15px; padding: 25px; margin-bottom: 30px; border-left: 5px solid #3498db;">
+                <h3 style="color: #2c3e50; margin-bottom: 15px;">🎯 Escolha o Tipo de Análise</h3>
                 
-                <div style="text-align: center; margin-top: 20px;">
-                    <button class="btn secondary" onclick="resetTemplate()">🔄 Resetar</button>
-                    <button class="btn success" onclick="salvarTemplate()">💾 Salvar Template</button>
-                </div>
-            </div>
-            
-            <!-- Status das etapas -->
-            <div id="statusEtapas" style="background: #f8f9fa; border-radius: 10px; padding: 20px; margin-top: 20px;">
-                <h4 style="color: #2c3e50; margin-bottom: 15px;">📋 Status das Etapas</h4>
-                <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <div id="status-candidatos" style="padding: 8px; border-radius: 5px; background: #f8d7da; color: #721c24;">
-                        ❌ Candidatos não carregados
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <!-- Análise Tradicional -->
+                    <div class="modo-card tradicional" onclick="ativarModoTradicional()" style="background: white; padding: 20px; border-radius: 10px; cursor: pointer; border: 2px solid #3498db; transition: all 0.3s ease;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 3em; margin-bottom: 15px;">📊</div>
+                            <h4 style="color: #2c3e50; margin-bottom: 10px;">Análise Tradicional</h4>
+                            <p style="color: #7f8c8d; font-size: 0.9em;">Templates pré-definidos com critérios fixos</p>
+                        </div>
                     </div>
-                    <div id="status-selecao" style="padding: 8px; border-radius: 5px; background: #f8d7da; color: #721c24;">
-                        ❌ Seleção não definida
-                    </div>
-                    <div id="status-template" style="padding: 8px; border-radius: 5px; background: #f8d7da; color: #721c24;">
-                        ❌ Template não selecionado
-                    </div>
-                    <div id="status-endereco" style="padding: 8px; border-radius: 5px; background: #f8d7da; color: #721c24;">
-                        ❌ Endereço não validado
+                    
+                    <!-- Análise Semântica -->
+                    <div class="modo-card semantica" onclick="ativarModoSemantico()" style="background: white; padding: 20px; border-radius: 10px; cursor: pointer; border: 2px solid #9b59b6; transition: all 0.3s ease;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 3em; margin-bottom: 15px;">🧠</div>
+                            <h4 style="color: #2c3e50; margin-bottom: 10px;">Análise Semântica (IA)</h4>
+                            <p style="color: #7f8c8d; font-size: 0.9em;">Inteligência artificial para análise inteligente</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            
+
+            <!-- === INDICADOR DE MODO ATIVO === -->
+            <div id="indicadorModo" class="hidden">
+                <!-- Será preenchido dinamicamente -->
+            </div>
+
+            <!-- === TEMPLATES === -->
+            <div id="templatesContainer">
+                <div class="templates-grid" id="templatesGrid">
+                    <!-- Templates serão carregados dinamicamente -->
+                </div>
+            </div>
+
+            <!-- === BOTÕES DE AÇÃO === -->
             <div style="text-align: center; margin-top: 30px;">
-                <button class="btn success" onclick="iniciarAnalise()">🚀 Iniciar Análise</button>
-                <button class="btn secondary" style="margin-left: 10px;" onclick="debugAnalise()">🔍 Debug</button>
+                <button class="btn secondary" onclick="showTab('selecao')">⬅️ Voltar: Seleção</button>
+                <button class="btn success" id="btnIniciarAnalise" onclick="iniciarAnalise()" disabled>🚀 Iniciar Análise</button>
             </div>
         </div>
 
-        <!-- ABA 5: Análise Semântica -->
-        <div class="tab-content" id="semantica">
-            <h2>🧠 Análise Semântica Ampliada</h2>
-            
-            <div class="semantic-section">
-                <div class="semantic-title">
-                    🎯 Inteligência Artificial para Análise de Candidatos
-                </div>
-                <div class="semantic-description">
-                    A análise semântica utiliza algoritmos avançados para identificar competências, experiências e qualificações dos candidatos através do reconhecimento de sinônimos, termos técnicos relacionados e contexto profissional.
-                </div>
-
-                <div class="semantic-features">
-                    <div class="semantic-feature">
-                        <strong>🔍 Reconhecimento Inteligente:</strong> Identifica competências mesmo quando descritas com termos diferentes
-                    </div>
-                    <div class="semantic-feature">
-                        <strong>📈 Análise Contextual:</strong> Considera o contexto das experiências profissionais
-                    </div>
-                    <div class="semantic-feature">
-                        <strong>⚖️ Avaliação Justa:</strong> Reduz bias na análise de currículos
-                    </div>
-                    <div class="semantic-feature">
-                        <strong>🎓 Base de Conhecimento:</strong> Utiliza dicionário técnico especializado
-                    </div>
-                </div>
-            </div>
-
-            <div class="templates-grid" id="semanticTemplatesGrid">
-                <!-- Templates semânticos serão carregados dinamicamente -->
-            </div>
-            
-            <div style="text-align: center; margin-top: 30px;">
-                <button class="btn semantic" onclick="ativarAnaliseSemantica()" id="btnAnaliseSemantica">
-                    🧠 Ativar Análise Semântica
-                </button>
-                <button class="btn secondary" style="margin-left: 10px;" onclick="showTab('templates')">
-                    📋 Voltar aos Templates Padrão
-                </button>
-            </div>
-
-            <div id="semanticStatus" class="hidden">
-                <div class="alert success">
-                    <strong>✅ Análise Semântica Ativada!</strong> Sistema preparado com critérios avançados.
-                </div>
-            </div>
-        </div>
-
-        <!-- ABA 6: Análise -->
+        <!-- === ABA 5: ANÁLISE === -->
         <div class="tab-content" id="analise">
             <h2>🔍 Análise em Andamento</h2>
             
-            <div class="progress-container">
-                <div class="progress-bar" id="progressBar" style="width: 0%;">0%</div>
+            <div style="background: #ecf0f1; border-radius: 10px; overflow: hidden; margin: 20px 0;">
+                <div id="progressBar" style="height: 20px; background: linear-gradient(90deg, #3498db, #2ecc71); transition: width 0.3s ease; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; width: 0%;">0%</div>
             </div>
             
             <div class="loading show" id="loadingAnalise">
@@ -1000,19 +541,19 @@
             </div>
         </div>
 
-        <!-- ABA 7: Dashboard -->
+        <!-- === ABA 6: DASHBOARD === -->
         <div class="tab-content" id="dashboard">
             <h2>📊 Dashboard de Resultados</h2>
             
-            <div class="stats-grid" id="statsGrid">
+            <div id="statsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
                 <!-- Estatísticas serão carregadas dinamicamente -->
             </div>
             
-            <div class="charts-section" id="chartsSection">
+            <div id="chartsSection" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; margin-bottom: 30px;">
                 <!-- Gráficos serão carregados dinamicamente -->
             </div>
             
-            <div class="ranking-container" id="rankingContainer">
+            <div id="rankingContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; margin-bottom: 30px;">
                 <!-- Rankings serão carregados dinamicamente -->
             </div>
             
@@ -1023,133 +564,184 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <div style="text-align: center; padding: 30px 20px;">
-        <div style="
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 16px 35px;
-            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            margin: 0 auto;
-            max-width: 1400px;
-        ">
-            <div style="
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-            ">
-                <div style="
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 12px;
-                    flex-wrap: wrap;
-                ">
-                    <div style="
-                        font-size: 1.2em;
-                        color: #2c3e50;
-                        font-weight: bold;
-                    ">📊 CV Analyzer Pro</div>
-                    
-                    <span style="
-                        display: flex;
-                        align-items: center;
-                        gap: 6px;
-                        padding: 6px 12px;
-                        background: linear-gradient(135deg, #3498db, #2980b9);
-                        border-radius: 15px;
-                        color: white;
-                        font-weight: 600;
-                        font-size: 0.75em;
-                        box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
-                    ">🔖 BETA v1.0</span>
-                </div>
-                
-                <div style="
-                    font-size: 1em;
-                    color: #34495e;
-                    font-weight: 500;
-                ">© 2025 Desenvolvido por <strong style="color: #2c3e50;">Rogerinho Ramos</strong></div>
-                
-                <div style="
-                    display: flex;
-                    gap: 12px;
-                    justify-content: center;
-                    font-size: 0.85em;
-                    font-weight: 500;
-                    flex-wrap: wrap;
-                    align-items: center;
-                    margin-top: 2px;
-                ">
-                    <span style="
-                        display: flex;
-                        align-items: center;
-                        gap: 5px;
-                        padding: 5px 10px;
-                        background: rgba(52, 73, 94, 0.1);
-                        border-radius: 12px;
-                        color: #34495e;
-                        font-weight: 500;
-                    ">⚡ HTML5</span>
-                    
-                    <span style="
-                        display: flex;
-                        align-items: center;
-                        gap: 5px;
-                        padding: 5px 10px;
-                        background: rgba(52, 73, 94, 0.1);
-                        border-radius: 12px;
-                        color: #34495e;
-                        font-weight: 500;
-                    ">📊 Chart.js</span>
-                    
-                    <span style="
-                        display: flex;
-                        align-items: center;
-                        gap: 5px;
-                        padding: 5px 10px;
-                        background: rgba(52, 73, 94, 0.1);
-                        border-radius: 12px;
-                        color: #34495e;
-                        font-weight: 500;
-                    ">📄 PDF.js</span>
-                    
-                    <span style="
-                        display: flex;
-                        align-items: center;
-                        gap: 5px;
-                        padding: 5px 10px;
-                        background: rgba(52, 73, 94, 0.1);
-                        border-radius: 12px;
-                        color: #34495e;
-                        font-weight: 500;
-                    ">🎨 CSS3</span>
-                    
-                    <span style="
-                        display: flex;
-                        align-items: center;
-                        gap: 5px;
-                        padding: 5px 10px;
-                        background: rgba(52, 73, 94, 0.1);
-                        border-radius: 12px;
-                        color: #34495e;
-                        font-weight: 500;
-                    ">💻 JavaScript ES6</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- JavaScript principal -->
+    <!-- === JAVASCRIPT PRINCIPAL === -->
     <script src="assets/app.js"></script>
-	
-	<!-- Melhorias semânticas -->
-	<link rel="stylesheet" href="assets/semantic-styles.css">
-	<script src="assets/semantic-enhancements.js"></script>
-		
-	
+    
+    <!-- === CORREÇÃO PARA BIBLIOTECAS === -->
+    <script>
+        // === VERIFICAR E CORRIGIR BIBLIOTECAS ===
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🔧 Verificando bibliotecas...');
+            
+            // Verificar PDF.js
+            if (typeof pdfjsLib === 'undefined') {
+                console.error('❌ PDF.js não carregou - usando fallback');
+                alert('⚠️ Erro: Biblioteca PDF.js não carregou.\nVerifique sua conexão e recarregue a página.');
+            } else {
+                console.log('✅ PDF.js carregado com sucesso');
+            }
+            
+            // Verificar Chart.js
+            if (typeof Chart === 'undefined') {
+                console.error('❌ Chart.js não carregou - usando fallback');
+                window.Chart = {
+                    register: () => {},
+                    defaults: {}
+                };
+                // Função fallback para gráficos
+                window.criarGraficoCidade = function() {
+                    console.warn('⚠️ Chart.js não disponível - gráfico não será exibido');
+                };
+                window.criarGraficoIdade = function() {
+                    console.warn('⚠️ Chart.js não disponível - gráfico não será exibido');
+                };
+            } else {
+                console.log('✅ Chart.js carregado com sucesso');
+            }
+            
+            // Verificar jsPDF
+            if (typeof window.jspdf === 'undefined') {
+                console.error('❌ jsPDF não carregou');
+                // Função fallback para PDF
+                window.exportarRelatorio = function() {
+                    alert('⚠️ Exportação PDF não disponível.\nBiblioteca jsPDF não carregou.');
+                };
+            } else {
+                console.log('✅ jsPDF carregado com sucesso');
+            }
+        });
+
+        // === FUNÇÕES SIMPLIFICADAS ===
+        let modoAnaliseAtual = 'tradicional';
+        let templateSelecionado = null;
+
+        function testarSistema() {
+            console.log('🔧 === TESTE DO SISTEMA ===');
+            const testes = {
+                pdfjs: typeof pdfjsLib !== 'undefined',
+                chartjs: typeof Chart !== 'undefined',
+                jspdf: typeof window.jspdf !== 'undefined',
+                appjs: typeof showTab === 'function'
+            };
+
+            let relatorio = '🔧 TESTE DO SISTEMA\n\n';
+            relatorio += `📚 PDF.js: ${testes.pdfjs ? '✅ OK' : '❌ ERRO'}\n`;
+            relatorio += `📊 Chart.js: ${testes.chartjs ? '✅ OK' : '❌ ERRO'}\n`;
+            relatorio += `📄 jsPDF: ${testes.jspdf ? '✅ OK' : '❌ ERRO'}\n`;
+            relatorio += `⚙️ App.js: ${testes.appjs ? '✅ OK' : '❌ ERRO'}\n`;
+
+            const problemas = Object.values(testes).filter(t => !t).length;
+            if (problemas === 0) {
+                relatorio += '\n🎉 SISTEMA FUNCIONANDO PERFEITAMENTE!';
+            } else {
+                relatorio += `\n⚠️ ${problemas} problema(s) encontrado(s)`;
+            }
+
+            alert(relatorio);
+        }
+
+        function ativarModoTradicional() {
+            modoAnaliseAtual = 'tradicional';
+            atualizarIndicadorModo();
+            carregarTemplatesTradicional();
+            document.getElementById('btnIniciarAnalise').disabled = false;
+        }
+
+        function ativarModoSemantico() {
+            modoAnaliseAtual = 'semantico';
+            atualizarIndicadorModo();
+            carregarTemplatesSemantico();
+            document.getElementById('btnIniciarAnalise').disabled = false;
+        }
+
+        function atualizarIndicadorModo() {
+            const indicador = document.getElementById('indicadorModo');
+            indicador.classList.remove('hidden');
+            
+            if (modoAnaliseAtual === 'semantico') {
+                indicador.className = 'modo-semantico';
+                indicador.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+                        <div style="font-size: 2em;">🧠</div>
+                        <div>
+                            <div style="font-size: 1.2em; margin-bottom: 5px;">MODO ATIVO: Análise Semântica (IA)</div>
+                            <div style="opacity: 0.9; font-size: 0.9em;">Sistema inteligente de reconhecimento de competências</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                indicador.style.background = 'linear-gradient(135deg, #3498db, #2980b9)';
+                indicador.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+                        <div style="font-size: 2em;">📊</div>
+                        <div>
+                            <div style="font-size: 1.2em; margin-bottom: 5px;">MODO ATIVO: Análise Tradicional</div>
+                            <div style="opacity: 0.9; font-size: 0.9em;">Templates pré-definidos com critérios fixos</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Atualizar estado global
+            if (window.appState) {
+                window.appState.analiseSemanticaAtiva = (modoAnaliseAtual === 'semantico');
+            }
+        }
+
+        function carregarTemplatesTradicional() {
+            const grid = document.getElementById('templatesGrid');
+            grid.innerHTML = `
+                <div class="template-card" onclick="selecionarTemplate('cnc_multifuncional')">
+                    <div class="template-title">📊 Operador CNC Multifuncional</div>
+                    <div class="template-description">Profissional versátil com experiência em múltiplas máquinas CNC</div>
+                </div>
+                <div class="template-card" onclick="selecionarTemplate('preparador_manual')">
+                    <div class="template-title">📊 Preparador CNC Manual</div>
+                    <div class="template-description">Especialista em programação manual e setup de máquinas</div>
+                </div>
+                <div class="template-card" onclick="selecionarTemplate('preparador_cam')">
+                    <div class="template-title">📊 Preparador CNC CAM</div>
+                    <div class="template-description">Especialista em programação via software CAM</div>
+                </div>
+            `;
+        }
+
+        function carregarTemplatesSemantico() {
+            const grid = document.getElementById('templatesGrid');
+            grid.innerHTML = `
+                <div class="template-card semantic" onclick="selecionarTemplate('semantic_cnc_avancado')">
+                    <div class="template-title">🧠 CNC Avançado (IA)</div>
+                    <div class="template-description">Análise semântica para perfis CNC com reconhecimento inteligente</div>
+                </div>
+                <div class="template-card semantic" onclick="selecionarTemplate('semantic_programador_cam')">
+                    <div class="template-title">🧠 Programador CAM (IA)</div>
+                    <div class="template-description">Análise semântica especializada para programadores CAM</div>
+                </div>
+            `;
+        }
+
+        function selecionarTemplate(templateId) {
+            // Remover seleção anterior
+            document.querySelectorAll('.template-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Selecionar novo template
+            event.currentTarget.classList.add('selected');
+            templateSelecionado = templateId;
+            
+            // Atualizar estado global
+            if (window.appState) {
+                window.appState.templateSelecionado = templateId;
+            }
+            
+            console.log(`✅ Template selecionado: ${templateId} (${modoAnaliseAtual})`);
+        }
+
+        // Garantir compatibilidade com app.js existente
+        window.ativarAnaliseSemantica = ativarModoSemantico;
+        window.selecionarTemplate = selecionarTemplate;
+        window.modoAnaliseAtual = modoAnaliseAtual;
+    </script>
 </body>
 </html>
