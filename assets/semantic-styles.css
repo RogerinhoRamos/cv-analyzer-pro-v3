@@ -1,0 +1,19 @@
+/* Estilos apenas para melhorias semânticas */
+.modo-semantico {
+    background: linear-gradient(135deg, #9b59b6, #8e44ad) !important;
+    color: white;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    text-align: center;
+    font-weight: bold;
+}
+
+.template-card.semantic {
+    border-left: 5px solid #9b59b6;
+    background: linear-gradient(135deg, #f4f1f8, #e8dff5);
+}
+
+.btn.semantic {
+    background: linear-gradient(135deg, #9b59b6, #8e44ad);
+}
