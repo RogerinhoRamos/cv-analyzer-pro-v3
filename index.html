@@ -1884,6 +1884,374 @@
 
 		console.log('✅ SISTEMA DEFINITIVO CARREGADO!');
 		
+		
+		
+		
+		
+		
+		
+		
+		// === CORREÇÃO DO BOTÃO ANALISAR + CARDS BRANCOS ===
+		console.log('🔧 Aplicando correções do botão analisar e cards...');
+
+		// === FUNÇÃO PARA INICIAR ANÁLISE ===
+		window.iniciarAnaliseCorrigida = function() {
+			console.log('🚀 Iniciando análise corrigida...');
+			
+			try {
+				const sistema = window.sistemaTemplates;
+				
+				// Verificar se sistema está pronto
+				if (!sistema || !sistema.inicializado) {
+					alert('❌ Sistema não inicializado. Recarregue a página.');
+					return;
+				}
+				
+				// Verificar se template foi selecionado
+				if (!sistema.templateSelecionado) {
+					alert('⚠️ Selecione um template antes de iniciar a análise.');
+					return;
+				}
+				
+				// Verificar se critérios foram editados
+				if (!sistema.criteriosEditados) {
+					alert('⚠️ Critérios não carregados. Selecione novamente o template.');
+					return;
+				}
+				
+				// Verificar se há candidatos
+				if (!window.appState || !window.appState.candidatos || window.appState.candidatos.length === 0) {
+					alert('⚠️ Nenhum candidato encontrado. Faça upload dos CVs primeiro.');
+					return;
+				}
+				
+				// Verificar se há candidatos selecionados
+				if (!window.appState.candidatosSelecionados || window.appState.candidatosSelecionados.size === 0) {
+					alert('⚠️ Nenhum candidato selecionado. Selecione pelo menos um candidato na aba "CVs".');
+					return;
+				}
+				
+				console.log('✅ Validações passaram, iniciando análise...');
+				
+				// Preparar dados para análise
+				const templateData = {
+					id: sistema.templateSelecionado,
+					nome: sistema.templatesDisponiveis[sistema.modoAtual][sistema.templateSelecionado].nome,
+					descricao: sistema.templatesDisponiveis[sistema.modoAtual][sistema.templateSelecionado].descricao,
+					criterios: sistema.criteriosEditados,
+					tipo: sistema.modoAtual === 'semantico' ? 'semantico' : 'tradicional'
+				};
+				
+				// Garantir que window.templates existe
+				if (!window.templates) {
+					window.templates = {};
+				}
+				
+				// Adicionar template ao sistema global
+				window.templates[sistema.templateSelecionado] = templateData;
+				
+				// Atualizar estado global
+				window.appState.templateSelecionado = sistema.templateSelecionado;
+				window.appState.analiseSemanticaAtiva = (sistema.modoAtual === 'semantico');
+				
+				console.log('🎯 Dados preparados:', {
+					template: templateData.nome,
+					tipo: templateData.tipo,
+					criterios: Object.keys(templateData.criterios).length,
+					candidatos: window.appState.candidatosSelecionados.size
+				});
+				
+				// Chamar função original de análise
+				if (typeof iniciarAnalise === 'function') {
+					console.log('📊 Chamando função original iniciarAnalise...');
+					iniciarAnalise();
+				} else {
+					console.error('❌ Função iniciarAnalise não encontrada');
+					alert('❌ Erro: Função de análise não encontrada no sistema.');
+				}
+				
+			} catch (error) {
+				console.error('❌ Erro ao iniciar análise:', error);
+				alert('❌ Erro ao iniciar análise.\n\nDetalhes: ' + error.message);
+			}
+		};
+
+		// === CORREÇÃO DOS CARDS BRANCOS ===
+		function corrigirVisualCards() {
+			console.log('🎨 Corrigindo visual dos cards...');
+			
+			try {
+				// Força reaplciação do CSS nos cards
+				const cards = document.querySelectorAll('.template-card');
+				
+				cards.forEach(card => {
+					// Remove classes conflitantes
+					card.classList.remove('hidden', 'invisible');
+					
+					// Força estilos base
+					card.style.display = 'block';
+					card.style.visibility = 'visible';
+					card.style.opacity = '1';
+					
+					// Reaplica classes corretas
+					if (card.classList.contains('semantic')) {
+						if (!card.classList.contains('selected')) {
+							card.style.background = 'linear-gradient(135deg, #f4f1f8, #e8dff5)';
+							card.style.borderLeftColor = '#9b59b6';
+						}
+					} else {
+						if (!card.classList.contains('selected')) {
+							card.style.background = 'linear-gradient(135deg, #f8f9fa, #e9ecef)';
+							card.style.borderLeftColor = '#3498db';
+						}
+					}
+				});
+				
+				console.log('✅ Visual dos cards corrigido');
+				
+			} catch (error) {
+				console.error('❌ Erro ao corrigir visual:', error);
+			}
+		}
+
+		// === CORREÇÃO DA TROCA DE MODOS ===
+		const ativarModoTradicionalOriginal = window.ativarModoTradicional;
+		const ativarModoSemanticoOriginal = window.ativarModoSemantico;
+
+		window.ativarModoTradicional = function() {
+			console.log('📊 Ativando modo tradicional (corrigido)...');
+			
+			try {
+				// Chamar função original
+				ativarModoTradicionalOriginal();
+				
+				// Aguardar um pouco e corrigir visual
+				setTimeout(() => {
+					corrigirVisualCards();
+					
+					// Garantir que badge tradicional apareça
+					const modoTradicional = document.getElementById('modo-tradicional');
+					if (modoTradicional) {
+						const badge = modoTradicional.querySelector('div:last-child');
+						if (badge) {
+							badge.style.display = 'block';
+							badge.style.visibility = 'visible';
+						}
+					}
+				}, 100);
+				
+				console.log('✅ Modo tradicional ativado e corrigido');
+				
+			} catch (error) {
+				console.error('❌ Erro na correção do modo tradicional:', error);
+			}
+		};
+
+		window.ativarModoSemantico = function() {
+			console.log('🧠 Ativando modo semântico (corrigido)...');
+			
+			try {
+				// Chamar função original
+				ativarModoSemanticoOriginal();
+				
+				// Aguardar um pouco e corrigir visual
+				setTimeout(() => {
+					corrigirVisualCards();
+					
+					// Garantir que badge semântico apareça
+					const badgeSemantico = document.getElementById('badge-semantico');
+					if (badgeSemantico) {
+						badgeSemantico.style.display = 'block';
+						badgeSemantico.style.visibility = 'visible';
+					}
+					
+					// Garantir que badge tradicional desapareça
+					const modoTradicional = document.getElementById('modo-tradicional');
+					if (modoTradicional) {
+						const badge = modoTradicional.querySelector('div:last-child');
+						if (badge) {
+							badge.style.display = 'none';
+						}
+					}
+				}, 100);
+				
+				console.log('✅ Modo semântico ativado e corrigido');
+				
+			} catch (error) {
+				console.error('❌ Erro na correção do modo semântico:', error);
+			}
+		};
+
+		// === CSS ADICIONAL PARA PROTEÇÃO ===
+		function adicionarCSSProtetivo() {
+			const style = document.createElement('style');
+			style.innerHTML = `
+				/* === PROTEÇÃO EXTRA PARA CARDS === */
+				.template-card {
+					background: linear-gradient(135deg, #f8f9fa, #e9ecef) !important;
+					border-left: 5px solid #3498db !important;
+					opacity: 1 !important;
+					visibility: visible !important;
+					display: block !important;
+				}
+				
+				.template-card.semantic {
+					background: linear-gradient(135deg, #f4f1f8, #e8dff5) !important;
+					border-left-color: #9b59b6 !important;
+				}
+				
+				.template-card.selected {
+					background: linear-gradient(135deg, #d4edda, #c3e6cb) !important;
+					border-left-color: #2ecc71 !important;
+				}
+				
+				.template-card.semantic.selected {
+					background: linear-gradient(135deg, #e8dff5, #d1c4e9) !important;
+					border-left-color: #8e44ad !important;
+				}
+				
+				/* === PROTEÇÃO PARA BADGES === */
+				#modo-tradicional div:last-child,
+				#badge-semantico {
+					transition: none !important;
+				}
+				
+				/* === PROTEÇÃO GERAL === */
+				#templatesGrid {
+					min-height: 200px;
+				}
+				
+				#templatesGrid .template-card {
+					margin-bottom: 15px !important;
+					min-height: 120px !important;
+				}
+			`;
+			document.head.appendChild(style);
+			console.log('🎨 CSS protetivo adicionado');
+		}
+
+		// === FUNÇÃO DE TESTE COMPLETO ===
+		window.testarSistemaCompleto = function() {
+			console.log('🧪 === TESTE COMPLETO DO SISTEMA ===');
+			
+			try {
+				const sistema = window.sistemaTemplates;
+				
+				const relatorio = {
+					// Sistema
+					sistemaOK: !!(sistema && sistema.inicializado),
+					templateSelecionado: sistema ? sistema.templateSelecionado : null,
+					modoAtual: sistema ? sistema.modoAtual : null,
+					criteriosEditados: sistema && sistema.criteriosEditados ? Object.keys(sistema.criteriosEditados).length : 0,
+					
+					// Funções críticas
+					funcaoIniciarAnalise: typeof iniciarAnalise === 'function',
+					funcaoIniciarAnaliseCorrigida: typeof iniciarAnaliseCorrigida === 'function',
+					funcaoAtivarTradicional: typeof ativarModoTradicional === 'function',
+					funcaoAtivarSemantico: typeof ativarModoSemantico === 'function',
+					
+					// App State
+					appStateExiste: !!window.appState,
+					candidatos: window.appState ? (window.appState.candidatos ? window.appState.candidatos.length : 0) : 0,
+					candidatosSelecionados: window.appState ? (window.appState.candidatosSelecionados ? window.appState.candidatosSelecionados.size : 0) : 0,
+					
+					// Elementos HTML
+					btnAnalise: !!document.getElementById('btnIniciarAnalise'),
+					templatesGrid: !!document.getElementById('templatesGrid'),
+					modoTradicional: !!document.getElementById('modo-tradicional'),
+					modoSemantico: !!document.getElementById('modo-semantico'),
+					
+					// Cards
+					totalCards: document.querySelectorAll('.template-card').length,
+					cardsVisiveis: document.querySelectorAll('.template-card:not([style*="display: none"])').length
+				};
+				
+				console.table(relatorio);
+				
+				// Relatório textual
+				let texto = '🧪 TESTE COMPLETO\n\n';
+				texto += `✅ Sistema: ${relatorio.sistemaOK ? 'OK' : 'ERRO'}\n`;
+				texto += `📊 Modo: ${relatorio.modoAtual || 'INDEFINIDO'}\n`;
+				texto += `📋 Template: ${relatorio.templateSelecionado || 'NENHUM'}\n`;
+				texto += `⚙️ Critérios: ${relatorio.criteriosEditados}\n`;
+				texto += `🔧 Função análise: ${relatorio.funcaoIniciarAnalise ? 'OK' : 'ERRO'}\n`;
+				texto += `👥 Candidatos: ${relatorio.candidatos}\n`;
+				texto += `✅ Selecionados: ${relatorio.candidatosSelecionados}\n`;
+				texto += `🎨 Cards: ${relatorio.totalCards} (${relatorio.cardsVisiveis} visíveis)\n`;
+				
+				// Status
+				if (!relatorio.sistemaOK) {
+					texto += '\n❌ ERRO: Sistema não inicializado!';
+				} else if (!relatorio.funcaoIniciarAnalise) {
+					texto += '\n❌ ERRO: Função de análise não encontrada!';
+				} else if (relatorio.candidatos === 0) {
+					texto += '\n⚠️ AVISO: Nenhum candidato carregado!';
+				} else if (relatorio.candidatosSelecionados === 0) {
+					texto += '\n⚠️ AVISO: Nenhum candidato selecionado!';
+				} else if (!relatorio.templateSelecionado) {
+					texto += '\n⚠️ AVISO: Nenhum template selecionado!';
+				} else {
+					texto += '\n🎉 SISTEMA OK - Pronto para análise!';
+				}
+				
+				alert(texto);
+				return relatorio;
+				
+			} catch (error) {
+				console.error('❌ Erro no teste:', error);
+				alert('❌ Erro no teste: ' + error.message);
+			}
+		};
+
+		// === FUNÇÃO DE REPARO RÁPIDO ===
+		window.repararSistema = function() {
+			console.log('🔧 Reparando sistema...');
+			
+			try {
+				// Reforçar inicialização
+				if (!window.sistemaTemplates || !window.sistemaTemplates.inicializado) {
+					console.log('⚠️ Reinicializando sistema...');
+					inicializarSistemaDefinitivo();
+				}
+				
+				// Corrigir visual
+				corrigirVisualCards();
+				
+				// Adicionar CSS protetivo
+				adicionarCSSProtetivo();
+				
+				// Reativar modo atual
+				const sistema = window.sistemaTemplates;
+				if (sistema && sistema.modoAtual) {
+					if (sistema.modoAtual === 'semantico') {
+						ativarModoSemantico();
+					} else {
+						ativarModoTradicional();
+					}
+				}
+				
+				alert('🔧 Sistema reparado!\n\nTeste novamente as funcionalidades.');
+				
+			} catch (error) {
+				console.error('❌ Erro no reparo:', error);
+				alert('❌ Erro no reparo: ' + error.message);
+			}
+		};
+
+		// === APLICAR CORREÇÕES IMEDIATAMENTE ===
+		setTimeout(() => {
+			try {
+				console.log('🔧 Aplicando correções automáticas...');
+				adicionarCSSProtetivo();
+				corrigirVisualCards();
+				console.log('✅ Correções aplicadas');
+			} catch (error) {
+				console.error('❌ Erro nas correções automáticas:', error);
+			}
+		}, 1000);
+
+		console.log('✅ Correções do botão analisar e cards carregadas!');
+		
 				
 		
 		
