@@ -715,6 +715,100 @@
 		
 		
 		
+		
+		
+		<!-- === SOLUÇÃO DEFINITIVA COMPLETA === -->
+		<!-- COLE ISTO NO FINAL DO SEU INDEX.HTML, ANTES DE </body> -->
+
+		<!-- === CSS PARA TEMPLATES === -->
+		<style>
+		/* === CSS ESPECÍFICO PARA TEMPLATES === */
+		.template-card {
+			background: linear-gradient(135deg, #f8f9fa, #e9ecef) !important;
+			border-radius: 15px !important;
+			padding: 25px !important;
+			border-left: 5px solid #3498db !important;
+			transition: all 0.3s ease !important;
+			cursor: pointer !important;
+			margin-bottom: 20px !important;
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+			position: relative !important;
+			overflow: hidden !important;
+		}
+
+		.template-card:hover {
+			transform: translateY(-3px) !important;
+			box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+		}
+
+		.template-card.selected {
+			border-left-color: #2ecc71 !important;
+			background: linear-gradient(135deg, #d4edda, #c3e6cb) !important;
+			transform: translateY(-3px) !important;
+			box-shadow: 0 8px 30px rgba(46, 204, 113, 0.4) !important;
+		}
+
+		.template-card.semantic {
+			border-left-color: #9b59b6 !important;
+			background: linear-gradient(135deg, #f4f1f8, #e8dff5) !important;
+		}
+
+		.template-card.semantic.selected {
+			border-left-color: #8e44ad !important;
+			background: linear-gradient(135deg, #e8dff5, #d1c4e9) !important;
+			box-shadow: 0 8px 30px rgba(155, 89, 182, 0.4) !important;
+		}
+
+		.template-title {
+			font-size: 1.3em !important;
+			font-weight: bold !important;
+			color: #2c3e50 !important;
+			margin-bottom: 10px !important;
+		}
+
+		.template-description {
+			color: #7f8c8d !important;
+			margin-bottom: 15px !important;
+			line-height: 1.5 !important;
+		}
+
+		/* === CSS PARA MODO CARDS === */
+		.modo-card {
+			transition: all 0.3s ease !important;
+			position: relative !important;
+			cursor: pointer !important;
+		}
+
+		.modo-card:hover {
+			transform: translateY(-2px) !important;
+			box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+		}
+
+		/* === CSS PARA EDITOR === */
+		.criterio-item {
+			background: white !important;
+			padding: 15px !important;
+			border-radius: 8px !important;
+			margin-bottom: 10px !important;
+			box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
+			display: flex !important;
+			align-items: center !important;
+			justify-content: space-between !important;
+		}
+
+		/* === PROTEÇÃO CONTRA SOBRESCRITA === */
+		#templatesGrid .template-card {
+			display: block !important;
+			visibility: visible !important;
+			opacity: 1 !important;
+		}
+		
+		
+		
+		
+		
+		
+		
     </style>
 </head>
 <body>
@@ -1185,149 +1279,161 @@
 		
 		
 		
-		// === CORREÇÃO COMPLETA DO ERRO - SISTEMA PROTEGIDO ===
-		console.log('🔧 Iniciando correção do sistema de templates...');
+		
+		
+		
+		<!-- === JAVASCRIPT DEFINITIVO === -->
 
-		// === INICIALIZAÇÃO PROTEGIDA ===
-		function inicializarSistemaTemplates() {
-			console.log('🚀 Inicializando sistema de templates...');
-			
-			// Verificar se já existe
+		console.log('🔧 === SOLUÇÃO DEFINITIVA INICIANDO ===');
+
+		// === LIMPAR QUALQUER SISTEMA ANTERIOR ===
+		try {
 			if (window.sistemaTemplates) {
-				console.log('✅ Sistema já inicializado');
-				return;
+				console.log('🗑️ Removendo sistema anterior...');
+				delete window.sistemaTemplates;
 			}
 			
-			// Criar estrutura completa
+			// Remover event listeners antigos se existirem
+			const elementosLimpar = ['modo-tradicional', 'modo-semantico'];
+			elementosLimpar.forEach(id => {
+				const el = document.getElementById(id);
+				if (el) {
+					el.replaceWith(el.cloneNode(true));
+				}
+			});
+			
+			console.log('✅ Limpeza concluída');
+		} catch (error) {
+			console.log('⚠️ Erro na limpeza (normal):', error.message);
+		}
+
+		// === FORÇAR INICIALIZAÇÃO IMEDIATA ===
+		window.SISTEMA_TEMPLATES_DEFINITIVO = {
+			inicializado: false,
+			versao: '2.0',
+			debug: true
+		};
+
+		// === DADOS DOS TEMPLATES ===
+		const TEMPLATES_DATA = {
+			tradicional: {
+				cnc_multifuncional: {
+					nome: "Operador CNC Multifuncional",
+					descricao: "Profissional versátil com experiência em múltiplas máquinas CNC",
+					criterios: {
+						experiencia_cnc: { nome: "Experiência CNC", peso: 10, obrigatorio: true },
+						torno_cnc: { nome: "Torno CNC", peso: 8, obrigatorio: true },
+						centro_usinagem: { nome: "Centro de Usinagem", peso: 7, obrigatorio: false },
+						programacao_manual: { nome: "Programação Manual", peso: 6, obrigatorio: false },
+						setup_maquina: { nome: "Setup de Máquina", peso: 8, obrigatorio: true },
+						leitura_desenho: { nome: "Leitura Desenho Técnico", peso: 7, obrigatorio: true },
+						instrumentos_medicao: { nome: "Instrumentos de Medição", peso: 7, obrigatorio: true },
+						anos_experiencia: { nome: "Anos de Experiência", peso: 6, obrigatorio: false },
+						formacao_senai: { nome: "Formação SENAI", peso: 5, obrigatorio: false },
+						proximidade: { nome: "Proximidade da Vaga", peso: 3, obrigatorio: false }
+					}
+				},
+				preparador_manual: {
+					nome: "Preparador CNC Manual",
+					descricao: "Especialista em programação manual e setup de máquinas",
+					criterios: {
+						programacao_manual: { nome: "Programação Manual", peso: 10, obrigatorio: true },
+						codigos_g_m: { nome: "Códigos G/M", peso: 9, obrigatorio: true },
+						setup_maquina: { nome: "Setup de Máquina", peso: 9, obrigatorio: true },
+						fanuc_siemens: { nome: "Comandos Fanuc/Siemens", peso: 8, obrigatorio: true },
+						preset_ferramentas: { nome: "Preset de Ferramentas", peso: 8, obrigatorio: true },
+						experiencia_cnc: { nome: "Experiência CNC", peso: 8, obrigatorio: true },
+						leitura_desenho: { nome: "Leitura Desenho Técnico", peso: 7, obrigatorio: true },
+						programacao_cam: { nome: "Programação CAM", peso: 3, obrigatorio: false },
+						anos_experiencia: { nome: "Anos de Experiência", peso: 7, obrigatorio: false },
+						proximidade: { nome: "Proximidade da Vaga", peso: 3, obrigatorio: false }
+					}
+				},
+				preparador_cam: {
+					nome: "Preparador CNC CAM",
+					descricao: "Especialista em programação via software CAM",
+					criterios: {
+						programacao_cam: { nome: "Programação CAM", peso: 10, obrigatorio: true },
+						mastercam: { nome: "MasterCAM", peso: 9, obrigatorio: true },
+						powermill: { nome: "PowerMill", peso: 8, obrigatorio: false },
+						solidworks: { nome: "SolidWorks/CAD", peso: 7, obrigatorio: false },
+						setup_maquina: { nome: "Setup de Máquina", peso: 8, obrigatorio: true },
+						preset_ferramentas: { nome: "Preset de Ferramentas", peso: 8, obrigatorio: true },
+						experiencia_cnc: { nome: "Experiência CNC", peso: 7, obrigatorio: true },
+						programacao_manual: { nome: "Programação Manual", peso: 5, obrigatorio: false },
+						anos_experiencia: { nome: "Anos de Experiência", peso: 6, obrigatorio: false },
+						proximidade: { nome: "Proximidade da Vaga", peso: 3, obrigatorio: false }
+					}
+				}
+			},
+			semantico: {
+				semantic_cnc_avancado: {
+					nome: "🧠 CNC Avançado (IA)",
+					descricao: "Análise semântica para perfis CNC com reconhecimento inteligente",
+					criterios: {
+						programacao_cnc: { nome: "Programação CNC", peso: 10, obrigatorio: true },
+						operacao_cnc: { nome: "Operação CNC", peso: 9, obrigatorio: true },
+						comandos_cnc: { nome: "Comandos CNC", peso: 8, obrigatorio: true },
+						setup_preparacao: { nome: "Setup e Preparação", peso: 9, obrigatorio: true },
+						medicao_desenho: { nome: "Medição e Desenho", peso: 8, obrigatorio: true },
+						tipos_maquina: { nome: "Tipos de Máquina", peso: 8, obrigatorio: false },
+						multifuncionalidade: { nome: "Multifuncionalidade", peso: 7, obrigatorio: false },
+						formacao_tecnica: { nome: "Formação Técnica", peso: 6, obrigatorio: false }
+					}
+				},
+				semantic_programador_cam: {
+					nome: "🧠 Programador CAM (IA)",
+					descricao: "Análise semântica especializada para programadores CAM",
+					criterios: {
+						programacao_cam: { nome: "Programação CAM", peso: 10, obrigatorio: true },
+						programacao_cnc: { nome: "Programação CNC", peso: 8, obrigatorio: true },
+						comandos_cnc: { nome: "Comandos CNC", peso: 7, obrigatorio: true },
+						setup_preparacao: { nome: "Setup e Preparação", peso: 8, obrigatorio: true },
+						medicao_desenho: { nome: "Medição e Desenho", peso: 8, obrigatorio: true },
+						macro_programming: { nome: "Macro Programming", peso: 9, obrigatorio: false },
+						formacao_tecnica: { nome: "Formação Técnica", peso: 6, obrigatorio: false }
+					}
+				}
+			}
+		};
+
+		// === SISTEMA PRINCIPAL ===
+		function inicializarSistemaDefinitivo() {
+			console.log('🚀 Inicializando sistema definitivo...');
+			
 			window.sistemaTemplates = {
 				modoAtual: 'tradicional',
 				templateSelecionado: null,
 				criteriosEditados: null,
 				inicializado: true,
-				versao: '1.0',
-				templatesDisponiveis: {
-					tradicional: {
-						cnc_multifuncional: {
-							nome: "Operador CNC Multifuncional",
-							descricao: "Profissional versátil com experiência em múltiplas máquinas CNC",
-							criterios: {
-								experiencia_cnc: { nome: "Experiência CNC", peso: 10, obrigatorio: true },
-								torno_cnc: { nome: "Torno CNC", peso: 8, obrigatorio: true },
-								centro_usinagem: { nome: "Centro de Usinagem", peso: 7, obrigatorio: false },
-								programacao_manual: { nome: "Programação Manual", peso: 6, obrigatorio: false },
-								setup_maquina: { nome: "Setup de Máquina", peso: 8, obrigatorio: true },
-								leitura_desenho: { nome: "Leitura Desenho Técnico", peso: 7, obrigatorio: true },
-								instrumentos_medicao: { nome: "Instrumentos de Medição", peso: 7, obrigatorio: true },
-								anos_experiencia: { nome: "Anos de Experiência", peso: 6, obrigatorio: false },
-								formacao_senai: { nome: "Formação SENAI", peso: 5, obrigatorio: false },
-								proximidade: { nome: "Proximidade da Vaga", peso: 3, obrigatorio: false }
-							}
-						},
-						preparador_manual: {
-							nome: "Preparador CNC Manual",
-							descricao: "Especialista em programação manual e setup de máquinas",
-							criterios: {
-								programacao_manual: { nome: "Programação Manual", peso: 10, obrigatorio: true },
-								codigos_g_m: { nome: "Códigos G/M", peso: 9, obrigatorio: true },
-								setup_maquina: { nome: "Setup de Máquina", peso: 9, obrigatorio: true },
-								fanuc_siemens: { nome: "Comandos Fanuc/Siemens", peso: 8, obrigatorio: true },
-								preset_ferramentas: { nome: "Preset de Ferramentas", peso: 8, obrigatorio: true },
-								experiencia_cnc: { nome: "Experiência CNC", peso: 8, obrigatorio: true },
-								leitura_desenho: { nome: "Leitura Desenho Técnico", peso: 7, obrigatorio: true },
-								programacao_cam: { nome: "Programação CAM", peso: 3, obrigatorio: false },
-								anos_experiencia: { nome: "Anos de Experiência", peso: 7, obrigatorio: false },
-								proximidade: { nome: "Proximidade da Vaga", peso: 3, obrigatorio: false }
-							}
-						},
-						preparador_cam: {
-							nome: "Preparador CNC CAM",
-							descricao: "Especialista em programação via software CAM",
-							criterios: {
-								programacao_cam: { nome: "Programação CAM", peso: 10, obrigatorio: true },
-								mastercam: { nome: "MasterCAM", peso: 9, obrigatorio: true },
-								powermill: { nome: "PowerMill", peso: 8, obrigatorio: false },
-								solidworks: { nome: "SolidWorks/CAD", peso: 7, obrigatorio: false },
-								setup_maquina: { nome: "Setup de Máquina", peso: 8, obrigatorio: true },
-								preset_ferramentas: { nome: "Preset de Ferramentas", peso: 8, obrigatorio: true },
-								experiencia_cnc: { nome: "Experiência CNC", peso: 7, obrigatorio: true },
-								programacao_manual: { nome: "Programação Manual", peso: 5, obrigatorio: false },
-								anos_experiencia: { nome: "Anos de Experiência", peso: 6, obrigatorio: false },
-								proximidade: { nome: "Proximidade da Vaga", peso: 3, obrigatorio: false }
-							}
-						}
-					},
-					semantico: {
-						semantic_cnc_avancado: {
-							nome: "🧠 CNC Avançado (IA)",
-							descricao: "Análise semântica para perfis CNC com reconhecimento inteligente",
-							criterios: {
-								programacao_cnc: { nome: "Programação CNC", peso: 10, obrigatorio: true },
-								operacao_cnc: { nome: "Operação CNC", peso: 9, obrigatorio: true },
-								comandos_cnc: { nome: "Comandos CNC", peso: 8, obrigatorio: true },
-								setup_preparacao: { nome: "Setup e Preparação", peso: 9, obrigatorio: true },
-								medicao_desenho: { nome: "Medição e Desenho", peso: 8, obrigatorio: true },
-								tipos_maquina: { nome: "Tipos de Máquina", peso: 8, obrigatorio: false },
-								multifuncionalidade: { nome: "Multifuncionalidade", peso: 7, obrigatorio: false },
-								formacao_tecnica: { nome: "Formação Técnica", peso: 6, obrigatorio: false }
-							}
-						},
-						semantic_programador_cam: {
-							nome: "🧠 Programador CAM (IA)",
-							descricao: "Análise semântica especializada para programadores CAM",
-							criterios: {
-								programacao_cam: { nome: "Programação CAM", peso: 10, obrigatorio: true },
-								programacao_cnc: { nome: "Programação CNC", peso: 8, obrigatorio: true },
-								comandos_cnc: { nome: "Comandos CNC", peso: 7, obrigatorio: true },
-								setup_preparacao: { nome: "Setup e Preparação", peso: 8, obrigatorio: true },
-								medicao_desenho: { nome: "Medição e Desenho", peso: 8, obrigatorio: true },
-								macro_programming: { nome: "Macro Programming", peso: 9, obrigatorio: false },
-								formacao_tecnica: { nome: "Formação Técnica", peso: 6, obrigatorio: false }
-							}
-						}
-					}
-				}
+				versao: '2.0',
+				templatesDisponiveis: JSON.parse(JSON.stringify(TEMPLATES_DATA))
 			};
 			
-			console.log('✅ Sistema de templates inicializado com sucesso!');
-			console.log('📊 Templates tradicionais:', Object.keys(window.sistemaTemplates.templatesDisponiveis.tradicional).length);
-			console.log('🧠 Templates semânticos:', Object.keys(window.sistemaTemplates.templatesDisponiveis.semantico).length);
-		}
-
-		// === FUNÇÕES PROTEGIDAS CONTRA ERRO ===
-
-		function verificarSistema() {
-			if (!window.sistemaTemplates || !window.sistemaTemplates.inicializado) {
-				console.log('⚠️ Sistema não inicializado, inicializando agora...');
-				inicializarSistemaTemplates();
-			}
+			window.SISTEMA_TEMPLATES_DEFINITIVO.inicializado = true;
+			
+			console.log('✅ Sistema definitivo inicializado!');
 			return window.sistemaTemplates;
 		}
 
-		function obterElementoSeguro(id) {
-			const elemento = document.getElementById(id);
-			if (!elemento) {
-				console.warn(`⚠️ Elemento ${id} não encontrado`);
-				return null;
-			}
-			return elemento;
-		}
-
-		// === FUNÇÃO TRADICIONAL PROTEGIDA ===
-		function ativarModoTradicional() {
+		// === FUNÇÕES PRINCIPAIS FORÇADAS ===
+		window.ativarModoTradicional = function() {
 			console.log('📊 Ativando modo tradicional...');
 			
 			try {
-				// Verificar e inicializar sistema
-				const sistema = verificarSistema();
+				// Garantir inicialização
+				if (!window.sistemaTemplates || !window.sistemaTemplates.inicializado) {
+					inicializarSistemaDefinitivo();
+				}
 				
-				// Atualizar estado
+				const sistema = window.sistemaTemplates;
 				sistema.modoAtual = 'tradicional';
 				
-				// Atualizar visual dos cards
-				const modoTradicional = obterElementoSeguro('modo-tradicional');
-				const modoSemantico = obterElementoSeguro('modo-semantico');
-				const badgeSemantico = obterElementoSeguro('badge-semantico');
-				const tituloTemplates = obterElementoSeguro('tituloTemplates');
+				// Atualizar visual
+				const modoTradicional = document.getElementById('modo-tradicional');
+				const modoSemantico = document.getElementById('modo-semantico');
+				const badgeSemantico = document.getElementById('badge-semantico');
+				const tituloTemplates = document.getElementById('tituloTemplates');
 				
 				if (modoTradicional) {
 					modoTradicional.style.border = '3px solid #3498db';
@@ -1352,7 +1458,7 @@
 				// Carregar templates
 				carregarTemplatesTradicional();
 				
-				// Atualizar estado global (compatibilidade)
+				// Compatibilidade
 				if (window.appState) {
 					window.appState.analiseSemanticaAtiva = false;
 				}
@@ -1361,26 +1467,27 @@
 				
 			} catch (error) {
 				console.error('❌ Erro ao ativar modo tradicional:', error);
-				alert('❌ Erro ao ativar modo tradicional. Recarregue a página.');
+				alert('❌ Erro ao ativar modo tradicional.\n\nDetalhes: ' + error.message);
 			}
-		}
+		};
 
-		// === FUNÇÃO SEMÂNTICA PROTEGIDA ===
-		function ativarModoSemantico() {
+		window.ativarModoSemantico = function() {
 			console.log('🧠 Ativando modo semântico...');
 			
 			try {
-				// Verificar e inicializar sistema
-				const sistema = verificarSistema();
+				// Garantir inicialização
+				if (!window.sistemaTemplates || !window.sistemaTemplates.inicializado) {
+					inicializarSistemaDefinitivo();
+				}
 				
-				// Atualizar estado
+				const sistema = window.sistemaTemplates;
 				sistema.modoAtual = 'semantico';
 				
-				// Atualizar visual dos cards
-				const modoSemantico = obterElementoSeguro('modo-semantico');
-				const modoTradicional = obterElementoSeguro('modo-tradicional');
-				const badgeSemantico = obterElementoSeguro('badge-semantico');
-				const tituloTemplates = obterElementoSeguro('tituloTemplates');
+				// Atualizar visual
+				const modoSemantico = document.getElementById('modo-semantico');
+				const modoTradicional = document.getElementById('modo-tradicional');
+				const badgeSemantico = document.getElementById('badge-semantico');
+				const tituloTemplates = document.getElementById('tituloTemplates');
 				
 				if (modoSemantico) {
 					modoSemantico.style.border = '3px solid #9b59b6';
@@ -1405,7 +1512,7 @@
 				// Carregar templates
 				carregarTemplatesSemantico();
 				
-				// Atualizar estado global (compatibilidade)
+				// Compatibilidade
 				if (window.appState) {
 					window.appState.analiseSemanticaAtiva = true;
 				}
@@ -1414,26 +1521,36 @@
 				
 			} catch (error) {
 				console.error('❌ Erro ao ativar modo semântico:', error);
-				alert('❌ Erro ao ativar modo semântico. Recarregue a página.');
+				alert('❌ Erro ao ativar modo semântico.\n\nDetalhes: ' + error.message);
 			}
-		}
+		};
 
-		// === CARREGAR TEMPLATES TRADICIONAL PROTEGIDO ===
 		function carregarTemplatesTradicional() {
+			console.log('📊 Carregando templates tradicionais...');
+			
 			try {
-				const grid = obterElementoSeguro('templatesGrid');
-				if (!grid) return;
+				const grid = document.getElementById('templatesGrid');
+				if (!grid) {
+					console.warn('⚠️ Grid de templates não encontrado');
+					return;
+				}
 				
-				const sistema = verificarSistema();
+				const sistema = window.sistemaTemplates;
 				const templates = sistema.templatesDisponiveis.tradicional;
 				
+				// Limpar grid
 				grid.innerHTML = '';
 				
+				// Criar cards
 				Object.entries(templates).forEach(([id, template]) => {
 					const card = document.createElement('div');
 					card.className = 'template-card';
-					card.onclick = () => selecionarTemplateCorrigido(id);
 					card.setAttribute('data-template-id', id);
+					
+					// Adicionar evento de clique diretamente
+					card.addEventListener('click', function() {
+						selecionarTemplateCorrigido(id);
+					});
 					
 					card.innerHTML = `
 						<div class="template-title">📊 ${template.nome}</div>
@@ -1446,29 +1563,39 @@
 					grid.appendChild(card);
 				});
 				
-				console.log('✅ Templates tradicionais carregados');
+				console.log('✅ Templates tradicionais carregados:', Object.keys(templates).length);
 				
 			} catch (error) {
 				console.error('❌ Erro ao carregar templates tradicionais:', error);
 			}
 		}
 
-		// === CARREGAR TEMPLATES SEMÂNTICO PROTEGIDO ===
 		function carregarTemplatesSemantico() {
+			console.log('🧠 Carregando templates semânticos...');
+			
 			try {
-				const grid = obterElementoSeguro('templatesGrid');
-				if (!grid) return;
+				const grid = document.getElementById('templatesGrid');
+				if (!grid) {
+					console.warn('⚠️ Grid de templates não encontrado');
+					return;
+				}
 				
-				const sistema = verificarSistema();
+				const sistema = window.sistemaTemplates;
 				const templates = sistema.templatesDisponiveis.semantico;
 				
+				// Limpar grid
 				grid.innerHTML = '';
 				
+				// Criar cards
 				Object.entries(templates).forEach(([id, template]) => {
 					const card = document.createElement('div');
 					card.className = 'template-card semantic';
-					card.onclick = () => selecionarTemplateCorrigido(id);
 					card.setAttribute('data-template-id', id);
+					
+					// Adicionar evento de clique diretamente
+					card.addEventListener('click', function() {
+						selecionarTemplateCorrigido(id);
+					});
 					
 					card.innerHTML = `
 						<div class="template-title">${template.nome}</div>
@@ -1486,19 +1613,18 @@
 					grid.appendChild(card);
 				});
 				
-				console.log('✅ Templates semânticos carregados');
+				console.log('✅ Templates semânticos carregados:', Object.keys(templates).length);
 				
 			} catch (error) {
 				console.error('❌ Erro ao carregar templates semânticos:', error);
 			}
 		}
 
-		// === SELEÇÃO DE TEMPLATE PROTEGIDA ===
-		function selecionarTemplateCorrigido(templateId) {
+		window.selecionarTemplateCorrigido = function(templateId) {
 			console.log(`✅ Selecionando template: ${templateId}`);
 			
 			try {
-				const sistema = verificarSistema();
+				const sistema = window.sistemaTemplates;
 				
 				// Remover seleção anterior
 				document.querySelectorAll('.template-card').forEach(card => {
@@ -1509,6 +1635,9 @@
 				const cardSelecionado = document.querySelector(`[data-template-id="${templateId}"]`);
 				if (cardSelecionado) {
 					cardSelecionado.classList.add('selected');
+					console.log('🎨 Card marcado como selecionado');
+				} else {
+					console.warn('⚠️ Card não encontrado para ID:', templateId);
 				}
 				
 				// Atualizar estado
@@ -1524,22 +1653,20 @@
 					return;
 				}
 				
-				// Clonar critérios para edição
+				// Clonar critérios
 				sistema.criteriosEditados = JSON.parse(JSON.stringify(template.criterios));
 				
-				// Atualizar estado global (compatibilidade)
+				// Compatibilidade
 				if (window.appState) {
 					window.appState.templateSelecionado = templateId;
 				}
 				
-				// Atualizar status
+				// Mostrar status e editor
 				mostrarStatusTemplate(template);
-				
-				// Mostrar editor
 				mostrarEditorCriterios(template);
 				
-				// Habilitar botão de análise
-				const btnAnalise = obterElementoSeguro('btnIniciarAnalise');
+				// Habilitar botão
+				const btnAnalise = document.getElementById('btnIniciarAnalise');
 				if (btnAnalise) {
 					btnAnalise.disabled = false;
 				}
@@ -1548,19 +1675,18 @@
 				
 			} catch (error) {
 				console.error('❌ Erro ao selecionar template:', error);
-				alert('❌ Erro ao selecionar template. Tente novamente.');
+				alert('❌ Erro ao selecionar template.\n\nDetalhes: ' + error.message);
 			}
-		}
+		};
 
-		// === MOSTRAR STATUS PROTEGIDO ===
 		function mostrarStatusTemplate(template) {
 			try {
-				const sistema = verificarSistema();
+				const sistema = window.sistemaTemplates;
 				
-				const status = obterElementoSeguro('templateSelecionadoStatus');
-				const nomeTemplate = obterElementoSeguro('nomeTemplateSelecionado');
-				const tipoAnalise = obterElementoSeguro('tipoAnaliseStatus');
-				const numeroCriterios = obterElementoSeguro('numeroCriteriosStatus');
+				const status = document.getElementById('templateSelecionadoStatus');
+				const nomeTemplate = document.getElementById('nomeTemplateSelecionado');
+				const tipoAnalise = document.getElementById('tipoAnaliseStatus');
+				const numeroCriterios = document.getElementById('numeroCriteriosStatus');
 				
 				if (status) status.classList.remove('hidden');
 				if (nomeTemplate) nomeTemplate.textContent = template.nome;
@@ -1590,15 +1716,17 @@
 			}
 		}
 
-		// === MOSTRAR EDITOR PROTEGIDO ===
 		function mostrarEditorCriterios(template) {
 			try {
-				const sistema = verificarSistema();
+				const sistema = window.sistemaTemplates;
 				
-				const editor = obterElementoSeguro('editorCriterios');
-				const listaCriterios = obterElementoSeguro('listaCriterios');
+				const editor = document.getElementById('editorCriterios');
+				const listaCriterios = document.getElementById('listaCriterios');
 				
-				if (!editor || !listaCriterios) return;
+				if (!editor || !listaCriterios) {
+					console.warn('⚠️ Editor ou lista de critérios não encontrados');
+					return;
+				}
 				
 				editor.classList.remove('hidden');
 				listaCriterios.innerHTML = '';
@@ -1606,17 +1734,6 @@
 				Object.entries(template.criterios).forEach(([chave, criterio]) => {
 					const item = document.createElement('div');
 					item.className = 'criterio-item';
-					item.style.cssText = `
-						display: flex;
-						align-items: center;
-						justify-content: space-between;
-						padding: 15px;
-						background: white;
-						border-radius: 8px;
-						margin-bottom: 10px;
-						border-left: 4px solid ${sistema.modoAtual === 'semantico' ? '#9b59b6' : '#3498db'};
-						box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-					`;
 					
 					item.innerHTML = `
 						<div style="font-weight: bold; flex: 1; color: #2c3e50;">
@@ -1647,30 +1764,22 @@
 					listaCriterios.appendChild(item);
 				});
 				
-				// Atualizar cor do editor
-				if (sistema.modoAtual === 'semantico') {
-					editor.style.borderLeftColor = '#9b59b6';
-					editor.style.background = 'linear-gradient(135deg, #f8f5ff, #f0ebff)';
-				} else {
-					editor.style.borderLeftColor = '#3498db';
-					editor.style.background = '#f8f9fa';
-				}
+				console.log('✅ Editor de critérios exibido');
 				
 			} catch (error) {
 				console.error('❌ Erro ao mostrar editor:', error);
 			}
 		}
 
-		// === ATUALIZAR PESO PROTEGIDO ===
-		function atualizarPesoCriterio(chave, peso) {
+		window.atualizarPesoCriterio = function(chave, peso) {
 			try {
-				const sistema = verificarSistema();
+				const sistema = window.sistemaTemplates;
 				peso = parseInt(peso);
 				
 				if (sistema.criteriosEditados && sistema.criteriosEditados[chave]) {
 					sistema.criteriosEditados[chave].peso = peso;
 					
-					const pesoElement = obterElementoSeguro(`peso-${chave}`);
+					const pesoElement = document.getElementById(`peso-${chave}`);
 					if (pesoElement) {
 						pesoElement.textContent = peso;
 					}
@@ -1681,12 +1790,11 @@
 			} catch (error) {
 				console.error('❌ Erro ao atualizar peso:', error);
 			}
-		}
+		};
 
-		// === ATUALIZAR OBRIGATÓRIO PROTEGIDO ===
-		function atualizarObrigatorioCriterio(chave, obrigatorio) {
+		window.atualizarObrigatorioCriterio = function(chave, obrigatorio) {
 			try {
-				const sistema = verificarSistema();
+				const sistema = window.sistemaTemplates;
 				
 				if (sistema.criteriosEditados && sistema.criteriosEditados[chave]) {
 					sistema.criteriosEditados[chave].obrigatorio = obrigatorio;
@@ -1696,143 +1804,86 @@
 			} catch (error) {
 				console.error('❌ Erro ao atualizar obrigatório:', error);
 			}
-		}
+		};
 
-		// === DEBUG PROTEGIDO ===
-		function debugTemplate() {
+		window.debugTemplate = function() {
 			try {
-				console.log('🔍 === DEBUG DO TEMPLATE ===');
+				console.log('🔍 === DEBUG COMPLETO ===');
 				
-				const sistema = verificarSistema();
+				const sistema = window.sistemaTemplates;
 				
 				const debug = {
-					sistemaInicializado: !!sistema.inicializado,
-					modoAtual: sistema.modoAtual,
-					templateSelecionado: sistema.templateSelecionado,
-					criteriosEditados: sistema.criteriosEditados ? Object.keys(sistema.criteriosEditados).length : 0,
-					estadoGlobal: {
-						appState: !!window.appState,
-						candidatos: window.appState?.candidatos?.length || 0,
-						candidatosSelecionados: window.appState?.candidatosSelecionados?.size || 0,
-						analiseSemanticaAtiva: window.appState?.analiseSemanticaAtiva
-					}
+					sistemaInicializado: !!(sistema && sistema.inicializado),
+					modoAtual: sistema ? sistema.modoAtual : 'INDEFINIDO',
+					templateSelecionado: sistema ? sistema.templateSelecionado : 'NENHUM',
+					criteriosEditados: sistema && sistema.criteriosEditados ? Object.keys(sistema.criteriosEditados).length : 0,
+					elementosHTML: {
+						modoTradicional: !!document.getElementById('modo-tradicional'),
+						modoSemantico: !!document.getElementById('modo-semantico'),
+						templatesGrid: !!document.getElementById('templatesGrid'),
+						btnIniciarAnalise: !!document.getElementById('btnIniciarAnalise')
+					},
+					appState: !!window.appState
 				};
 				
 				console.table(debug);
 				
-				let relatorio = '🔍 DEBUG DO TEMPLATE\n\n';
-				relatorio += `🚀 Sistema: ${debug.sistemaInicializado ? '✅ Inicializado' : '❌ Não inicializado'}\n`;
+				let relatorio = '🔍 DEBUG COMPLETO\n\n';
+				relatorio += `🚀 Sistema: ${debug.sistemaInicializado ? '✅ OK' : '❌ ERRO'}\n`;
 				relatorio += `📊 Modo: ${debug.modoAtual}\n`;
-				relatorio += `📋 Template: ${debug.templateSelecionado || 'NENHUM'}\n`;
-				relatorio += `⚙️ Critérios editados: ${debug.criteriosEditados}\n`;
-				relatorio += `👥 Candidatos: ${debug.estadoGlobal.candidatos}\n`;
-				relatorio += `✅ Selecionados: ${debug.estadoGlobal.candidatosSelecionados}\n`;
-				relatorio += `🧠 IA ativa: ${debug.estadoGlobal.analiseSemanticaAtiva}\n`;
-				
-				if (!debug.sistemaInicializado) {
-					relatorio += '\n❌ PROBLEMA: Sistema não inicializado!';
-				} else if (!debug.templateSelecionado) {
-					relatorio += '\n❌ PROBLEMA: Nenhum template selecionado!';
-				} else if (debug.criteriosEditados === 0) {
-					relatorio += '\n❌ PROBLEMA: Critérios não carregados!';
-				} else {
-					relatorio += '\n✅ SISTEMA OK - Pronto para análise!';
-				}
+				relatorio += `📋 Template: ${debug.templateSelecionado}\n`;
+				relatorio += `⚙️ Critérios: ${debug.criteriosEditados}\n`;
+				relatorio += `🔧 Elementos HTML: ${Object.values(debug.elementosHTML).filter(Boolean).length}/4\n`;
+				relatorio += `📱 App State: ${debug.appState ? '✅' : '❌'}\n`;
 				
 				alert(relatorio);
 				
 			} catch (error) {
 				console.error('❌ Erro no debug:', error);
-				alert('❌ Erro no debug. Verifique o console.');
+				alert('❌ Erro no debug: ' + error.message);
 			}
-		}
+		};
 
-		// === TESTE COMPLETO ===
-		function testarSistemaCompleto() {
-			console.log('🧪 === TESTE COMPLETO DO SISTEMA ===');
+		// === INICIALIZAÇÃO FORÇADA ===
+		function forcarInicializacao() {
+			console.log('🔄 Forçando inicialização...');
 			
 			try {
-				// 1. Testar inicialização
-				inicializarSistemaTemplates();
+				// Inicializar sistema
+				inicializarSistemaDefinitivo();
 				
-				// 2. Testar elementos HTML
-				const elementos = [
-					'modo-tradicional',
-					'modo-semantico', 
-					'templatesGrid',
-					'btnIniciarAnalise'
-				];
-				
-				let elementosOK = 0;
-				elementos.forEach(id => {
-					if (obterElementoSeguro(id)) {
-						elementosOK++;
-						console.log(`✅ ${id} encontrado`);
+				// Aguardar elementos HTML
+				setTimeout(() => {
+					const modoTradicional = document.getElementById('modo-tradicional');
+					const modoSemantico = document.getElementById('modo-semantico');
+					
+					if (modoTradicional && modoSemantico) {
+						console.log('✅ Elementos encontrados, ativando modo tradicional...');
+						ativarModoTradicional();
 					} else {
-						console.log(`❌ ${id} não encontrado`);
+						console.warn('⚠️ Elementos não encontrados, tentando novamente em 2s...');
+						setTimeout(forcarInicializacao, 2000);
 					}
-				});
-				
-				// 3. Testar templates
-				const sistema = verificarSistema();
-				const totalTradicional = Object.keys(sistema.templatesDisponiveis.tradicional).length;
-				const totalSemantico = Object.keys(sistema.templatesDisponiveis.semantico).length;
-				
-				console.log(`📊 Templates tradicionais: ${totalTradicional}`);
-				console.log(`🧠 Templates semânticos: ${totalSemantico}`);
-				
-				// 4. Relatório
-				const relatorio = `
-		🧪 TESTE COMPLETO DO SISTEMA
-
-		✅ Sistema inicializado: ${!!sistema.inicializado}
-		📋 Elementos HTML: ${elementosOK}/${elementos.length}
-		📊 Templates tradicionais: ${totalTradicional}
-		🧠 Templates semânticos: ${totalSemantico}
-
-		${elementosOK === elementos.length ? '🎉 SISTEMA FUNCIONANDO!' : '⚠️ Alguns elementos não encontrados'}
-				`.trim();
-				
-				alert(relatorio);
+				}, 500);
 				
 			} catch (error) {
-				console.error('❌ Erro no teste:', error);
-				alert('❌ Erro no teste. Verifique o console.');
+				console.error('❌ Erro na inicialização forçada:', error);
 			}
 		}
 
-		// === INICIALIZAÇÃO AUTOMÁTICA ===
-		document.addEventListener('DOMContentLoaded', function() {
-			console.log('🚀 DOM carregado, inicializando sistema...');
-			
-			setTimeout(() => {
-				try {
-					inicializarSistemaTemplates();
-					ativarModoTradicional(); // Ativar modo padrão
-					console.log('✅ Sistema de templates inicializado automaticamente');
-				} catch (error) {
-					console.error('❌ Erro na inicialização automática:', error);
-				}
-			}, 1000);
-		});
-
-		// === INICIALIZAÇÃO IMEDIATA (FALLBACK) ===
+		// === EXECUTAR IMEDIATAMENTE ===
 		if (document.readyState === 'loading') {
-			console.log('⏳ Aguardando DOM...');
+			document.addEventListener('DOMContentLoaded', forcarInicializacao);
 		} else {
-			console.log('🚀 DOM já carregado, inicializando...');
-			setTimeout(() => {
-				try {
-					inicializarSistemaTemplates();
-					ativarModoTradicional();
-				} catch (error) {
-					console.error('❌ Erro na inicialização imediata:', error);
-				}
-			}, 500);
+			forcarInicializacao();
 		}
 
-		console.log('✅ Sistema de templates protegido carregado!');
-				
+		// === BACKUP DE SEGURANÇA ===
+		setTimeout(forcarInicializacao, 1000);
+		setTimeout(forcarInicializacao, 3000);
+
+		console.log('✅ SISTEMA DEFINITIVO CARREGADO!');
+		
 				
 		
 		
