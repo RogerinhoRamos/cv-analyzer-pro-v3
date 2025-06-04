@@ -2258,252 +2258,331 @@
 		
 		
 		
-		
-		// === CORREÇÃO ESPECÍFICA: CARD BRANCO + CANDIDATOS ===
-		console.log('🔧 Aplicando correção específica para card branco e candidatos...');
+		// === INVESTIGAÇÃO COMPLETA + CORREÇÃO UNIVERSAL ===
+		console.log('🔍 === INVESTIGAÇÃO COMPLETA DO SISTEMA ===');
 
-		// === CORREÇÃO DO CARD MODO TRADICIONAL/SEMÂNTICO ===
-		function corrigirCardsModo() {
-			console.log('🎨 Corrigindo cards de modo (Tradicional/Semântico)...');
+		// === FUNÇÃO DE INVESTIGAÇÃO PROFUNDA ===
+		function investigarSistemaCompleto() {
+			console.log('🕵️ Investigando estrutura do sistema...');
 			
+			const relatorio = {
+				// Window objects
+				windowKeys: Object.keys(window).filter(key => 
+					key.includes('candidat') || 
+					key.includes('app') || 
+					key.includes('cv') || 
+					key.includes('analise') ||
+					key.includes('state') ||
+					key.includes('dados')
+				),
+				
+				// Verificar objetos específicos
+				verificacoes: {
+					appState: typeof window.appState,
+					app: typeof window.app,
+					candidatos: typeof window.candidatos,
+					cvData: typeof window.cvData,
+					dados: typeof window.dados,
+					dataState: typeof window.dataState,
+					globalState: typeof window.globalState
+				},
+				
+				// Verificar elementos DOM com dados
+				elementosComDados: [],
+				
+				// Verificar localStorage
+				localStorage: {},
+				
+				// Verificar se existe sistema de candidatos em elementos
+				candidatosDOM: 0
+			};
+			
+			// Investigar localStorage
 			try {
-				const modoTradicional = document.getElementById('modo-tradicional');
-				const modoSemantico = document.getElementById('modo-semantico');
-				
-				if (modoTradicional) {
-					// Força estilo básico sempre
-					modoTradicional.style.background = 'white';
-					modoTradicional.style.visibility = 'visible';
-					modoTradicional.style.opacity = '1';
-					modoTradicional.style.display = 'block';
-					
-					// Se está ativo, aplica estilo ativo
-					if (window.sistemaTemplates && window.sistemaTemplates.modoAtual === 'tradicional') {
-						modoTradicional.style.border = '3px solid #3498db';
-						modoTradicional.style.background = 'linear-gradient(135deg, #ebf3fd, #d6e9f8)';
-					} else {
-						modoTradicional.style.border = '2px solid #3498db';
-						modoTradicional.style.background = 'white';
+				for (let i = 0; i < localStorage.length; i++) {
+					const key = localStorage.key(i);
+					if (key && (key.includes('candidat') || key.includes('cv') || key.includes('app'))) {
+						relatorio.localStorage[key] = localStorage.getItem(key)?.substring(0, 100) + '...';
 					}
-					
-					console.log('✅ Card modo tradicional corrigido');
 				}
-				
-				if (modoSemantico) {
-					// Força estilo básico sempre
-					modoSemantico.style.visibility = 'visible';
-					modoSemantico.style.opacity = '1';
-					modoSemantico.style.display = 'block';
-					
-					// Se está ativo, aplica estilo ativo
-					if (window.sistemaTemplates && window.sistemaTemplates.modoAtual === 'semantico') {
-						modoSemantico.style.border = '3px solid #9b59b6';
-						modoSemantico.style.background = 'linear-gradient(135deg, #f8f5ff, #f0ebff)';
-					} else {
-						modoSemantico.style.border = '2px solid #9b59b6';
-						modoSemantico.style.background = 'white';
-					}
-					
-					console.log('✅ Card modo semântico corrigido');
-				}
-				
-			} catch (error) {
-				console.error('❌ Erro ao corrigir cards de modo:', error);
+			} catch (e) {
+				relatorio.localStorage = 'Erro ao acessar localStorage';
 			}
+			
+			// Verificar elementos DOM
+			const elementosComCandidatos = document.querySelectorAll('[data-candidato], [id*="candidat"], [class*="candidat"]');
+			relatorio.candidatosDOM = elementosComCandidatos.length;
+			
+			// Verificar se há elementos de checkbox de candidatos
+			const checkboxesCandidatos = document.querySelectorAll('input[type="checkbox"]');
+			relatorio.checkboxesCandidatos = checkboxesCandidatos.length;
+			
+			console.log('🔍 INVESTIGAÇÃO COMPLETA:');
+			console.table(relatorio);
+			
+			return relatorio;
 		}
 
-		// === CORREÇÃO DA VALIDAÇÃO DE CANDIDATOS ===
-		function debugCandidatos() {
-			console.log('🔍 === DEBUG CANDIDATOS ===');
+		// === FUNÇÃO PARA ENCONTRAR CANDIDATOS ===
+		function encontrarCandidatos() {
+			console.log('🔍 Procurando candidatos em todos os locais...');
+			
+			let candidatos = [];
+			let origem = 'nenhuma';
+			
+			// 1. Verificar window.appState
+			if (window.appState && window.appState.candidatos) {
+				candidatos = window.appState.candidatos;
+				origem = 'window.appState.candidatos';
+			}
+			// 2. Verificar window.candidatos
+			else if (window.candidatos) {
+				candidatos = window.candidatos;
+				origem = 'window.candidatos';
+			}
+			// 3. Verificar outras variáveis globais
+			else if (window.cvData) {
+				candidatos = window.cvData;
+				origem = 'window.cvData';
+			}
+			else if (window.dados && window.dados.candidatos) {
+				candidatos = window.dados.candidatos;
+				origem = 'window.dados.candidatos';
+			}
+			// 4. Verificar localStorage
+			else {
+				try {
+					const keys = ['candidatos', 'cvs', 'appState', 'dados'];
+					for (const key of keys) {
+						const stored = localStorage.getItem(key);
+						if (stored) {
+							const parsed = JSON.parse(stored);
+							if (Array.isArray(parsed)) {
+								candidatos = parsed;
+								origem = `localStorage.${key}`;
+								break;
+							} else if (parsed.candidatos) {
+								candidatos = parsed.candidatos;
+								origem = `localStorage.${key}.candidatos`;
+								break;
+							}
+						}
+					}
+				} catch (e) {
+					console.warn('⚠️ Erro ao ler localStorage:', e);
+				}
+			}
+			
+			// 5. Como último recurso, verificar elementos DOM
+			if (candidatos.length === 0) {
+				const elementosCandidatos = document.querySelectorAll('[data-candidato]');
+				if (elementosCandidatos.length > 0) {
+					candidatos = Array.from(elementosCandidatos).map((el, index) => ({
+						id: index,
+						nome: el.textContent || `Candidato ${index + 1}`,
+						origem: 'DOM'
+					}));
+					origem = 'elementos DOM';
+				}
+			}
+			
+			console.log(`📊 Encontrados: ${candidatos.length} candidatos em: ${origem}`);
+			
+			if (candidatos.length > 0) {
+				console.log('📝 Primeiro candidato:', candidatos[0]);
+			}
+			
+			return { candidatos, origem };
+		}
+
+		// === FUNÇÃO PARA ENCONTRAR CANDIDATOS SELECIONADOS ===
+		function encontrarCandidatosSelecionados() {
+			console.log('✅ Procurando candidatos selecionados...');
+			
+			let selecionados = [];
+			let origem = 'nenhuma';
+			
+			// 1. Verificar window.appState
+			if (window.appState && window.appState.candidatosSelecionados) {
+				const sel = window.appState.candidatosSelecionados;
+				if (sel.size !== undefined) {
+					selecionados = Array.from(sel);
+					origem = 'window.appState.candidatosSelecionados (Set)';
+				} else if (Array.isArray(sel)) {
+					selecionados = sel;
+					origem = 'window.appState.candidatosSelecionados (Array)';
+				} else if (typeof sel === 'object') {
+					selecionados = Object.keys(sel);
+					origem = 'window.appState.candidatosSelecionados (Object)';
+				}
+			}
+			// 2. Verificar checkboxes marcados
+			else {
+				const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+				if (checkboxes.length > 0) {
+					selecionados = Array.from(checkboxes).map((cb, index) => index);
+					origem = 'checkboxes marcados';
+				}
+			}
+			
+			// 3. Se não encontrou nada, assumir todos selecionados
+			if (selecionados.length === 0) {
+				const { candidatos } = encontrarCandidatos();
+				if (candidatos.length > 0) {
+					selecionados = candidatos.map((_, index) => index);
+					origem = 'todos assumidos como selecionados';
+				}
+			}
+			
+			console.log(`✅ Encontrados: ${selecionados.length} selecionados em: ${origem}`);
+			
+			return { selecionados, origem };
+		}
+
+		// === CRIAR APPSTATE SE NÃO EXISTIR ===
+		function criarAppState() {
+			console.log('🔧 Criando appState...');
 			
 			try {
-				const debug = {
-					// Verificar window.appState
-					appStateExiste: !!window.appState,
-					
-					// Verificar candidatos em diferentes locais
-					candidatos_appState: window.appState ? window.appState.candidatos : null,
-					candidatos_length: window.appState && window.appState.candidatos ? window.appState.candidatos.length : 0,
-					
-					// Verificar candidatos selecionados
-					candidatosSelecionados_appState: window.appState ? window.appState.candidatosSelecionados : null,
-					candidatosSelecionados_size: window.appState && window.appState.candidatosSelecionados ? window.appState.candidatosSelecionados.size : 0,
-					candidatosSelecionados_tipo: window.appState && window.appState.candidatosSelecionados ? typeof window.appState.candidatosSelecionados : 'undefined',
-					
-					// Verificar outras possíveis localizações
-					candidatos_window: window.candidatos ? window.candidatos.length : 0,
-					candidatos_global: typeof candidatos !== 'undefined' ? candidatos.length : 0,
+				const { candidatos, origemCandidatos } = encontrarCandidatos();
+				const { selecionados, origemSelecionados } = encontrarCandidatosSelecionados();
+				
+				// Criar window.appState
+				window.appState = {
+					candidatos: candidatos,
+					candidatosSelecionados: new Set(selecionados),
+					analiseSemanticaAtiva: false,
+					templateSelecionado: null,
+					origem: {
+						candidatos: origemCandidatos,
+						selecionados: origemSelecionados,
+						criado: new Date().toISOString()
+					}
 				};
 				
-				console.table(debug);
+				console.log('✅ appState criado com sucesso!');
+				console.log('📊 Candidatos:', candidatos.length);
+				console.log('✅ Selecionados:', selecionados.length);
+				console.log('🔧 Origem candidatos:', origemCandidatos);
+				console.log('🔧 Origem selecionados:', origemSelecionados);
 				
-				// Verificar conteúdo detalhado
-				if (window.appState) {
-					console.log('📊 window.appState:', window.appState);
-					
-					if (window.appState.candidatos) {
-						console.log('👥 Candidatos encontrados:', window.appState.candidatos.length);
-						console.log('📝 Primeiro candidato:', window.appState.candidatos[0]);
-					}
-					
-					if (window.appState.candidatosSelecionados) {
-						console.log('✅ Candidatos selecionados:', window.appState.candidatosSelecionados);
-						console.log('📊 Tipo:', typeof window.appState.candidatosSelecionados);
-						console.log('📏 Tamanho:', window.appState.candidatosSelecionados.size || window.appState.candidatosSelecionados.length);
-					}
-				}
-				
-				return debug;
+				return true;
 				
 			} catch (error) {
-				console.error('❌ Erro no debug de candidatos:', error);
-				return null;
+				console.error('❌ Erro ao criar appState:', error);
+				return false;
 			}
 		}
 
-		// === VALIDAÇÃO MELHORADA DE CANDIDATOS ===
-		function validarCandidatos() {
-			console.log('🔍 Validando candidatos...');
+		// === NOVA VALIDAÇÃO UNIVERSAL ===
+		function validacaoUniversal() {
+			console.log('🔍 === VALIDAÇÃO UNIVERSAL ===');
 			
 			try {
-				// Debug primeiro
-				const debug = debugCandidatos();
-				
-				// Verificar se appState existe
+				// Se appState não existe, criar
 				if (!window.appState) {
-					console.error('❌ window.appState não existe');
-					return {
-						valido: false,
-						motivo: 'Sistema não inicializado corretamente'
-					};
+					console.log('⚠️ appState não existe, criando...');
+					const criado = criarAppState();
+					if (!criado) {
+						return {
+							valido: false,
+							motivo: 'Não foi possível encontrar ou criar dados de candidatos'
+						};
+					}
 				}
 				
-				// Verificar candidatos carregados
-				let candidatosCarregados = 0;
-				
-				if (window.appState.candidatos && Array.isArray(window.appState.candidatos)) {
-					candidatosCarregados = window.appState.candidatos.length;
-				} else if (window.candidatos && Array.isArray(window.candidatos)) {
-					candidatosCarregados = window.candidatos.length;
+				// Validar candidatos
+				let candidatos = window.appState.candidatos || [];
+				if (!Array.isArray(candidatos)) {
+					candidatos = [];
 				}
 				
-				if (candidatosCarregados === 0) {
-					console.warn('⚠️ Nenhum candidato carregado');
+				if (candidatos.length === 0) {
 					return {
 						valido: false,
 						motivo: 'Nenhum candidato encontrado. Faça upload dos CVs primeiro.'
 					};
 				}
 				
-				console.log(`✅ ${candidatosCarregados} candidatos carregados`);
+				// Validar selecionados
+				let selecionados = window.appState.candidatosSelecionados;
+				let totalSelecionados = 0;
 				
-				// Verificar candidatos selecionados
-				let candidatosSelecionados = 0;
-				
-				// Tentar diferentes formatos
-				if (window.appState.candidatosSelecionados) {
-					if (typeof window.appState.candidatosSelecionados.size === 'number') {
-						// É um Set
-						candidatosSelecionados = window.appState.candidatosSelecionados.size;
-					} else if (Array.isArray(window.appState.candidatosSelecionados)) {
-						// É um Array
-						candidatosSelecionados = window.appState.candidatosSelecionados.length;
-					} else if (typeof window.appState.candidatosSelecionados === 'object') {
-						// É um objeto, contar chaves
-						candidatosSelecionados = Object.keys(window.appState.candidatosSelecionados).length;
+				if (selecionados) {
+					if (selecionados.size !== undefined) {
+						totalSelecionados = selecionados.size;
+					} else if (Array.isArray(selecionados)) {
+						totalSelecionados = selecionados.length;
+					} else if (typeof selecionados === 'object') {
+						totalSelecionados = Object.keys(selecionados).length;
 					}
 				}
 				
-				// Se não achou selecionados, ver se todos estão selecionados por padrão
-				if (candidatosSelecionados === 0) {
-					console.log('⚠️ Tentando verificar seleção automática...');
-					
-					// Verificar se há checkbox marcados na interface
-					const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-					candidatosSelecionados = checkboxes.length;
-					
-					// Se ainda não tem, assumir que todos estão selecionados
-					if (candidatosSelecionados === 0 && candidatosCarregados > 0) {
-						console.log('🔄 Assumindo que todos os candidatos estão selecionados...');
-						candidatosSelecionados = candidatosCarregados;
-						
-						// Criar seleção automática
-						if (!window.appState.candidatosSelecionados) {
-							window.appState.candidatosSelecionados = new Set();
-						}
-						
-						// Adicionar todos os candidatos
-						if (window.appState.candidatos) {
-							window.appState.candidatos.forEach((candidato, index) => {
-								window.appState.candidatosSelecionados.add(index);
-							});
-						}
-					}
+				if (totalSelecionados === 0) {
+					// Última tentativa: selecionar todos
+					console.log('🔄 Selecionando todos os candidatos automaticamente...');
+					window.appState.candidatosSelecionados = new Set(candidatos.map((_, index) => index));
+					totalSelecionados = candidatos.length;
 				}
 				
-				if (candidatosSelecionados === 0) {
-					console.warn('⚠️ Nenhum candidato selecionado');
+				if (totalSelecionados === 0) {
 					return {
 						valido: false,
-						motivo: 'Nenhum candidato selecionado. Selecione pelo menos um candidato na aba "CVs".'
+						motivo: 'Nenhum candidato selecionado. Selecione pelo menos um candidato.'
 					};
 				}
 				
-				console.log(`✅ ${candidatosSelecionados} candidatos selecionados`);
-				
 				return {
 					valido: true,
-					candidatosCarregados,
-					candidatosSelecionados
+					candidatos: candidatos.length,
+					selecionados: totalSelecionados,
+					origem: window.appState.origem
 				};
 				
 			} catch (error) {
-				console.error('❌ Erro na validação de candidatos:', error);
+				console.error('❌ Erro na validação universal:', error);
 				return {
 					valido: false,
-					motivo: 'Erro interno na validação: ' + error.message
+					motivo: 'Erro na validação: ' + error.message
 				};
 			}
 		}
 
-		// === NOVA FUNÇÃO DE ANÁLISE CORRIGIDA ===
+		// === NOVA FUNÇÃO INICIAR ANÁLISE ===
 		window.iniciarAnaliseCorrigida = function() {
-			console.log('🚀 Iniciando análise corrigida (versão 2)...');
+			console.log('🚀 === ANÁLISE UNIVERSAL ===');
 			
 			try {
+				// 1. Verificar sistema de templates
 				const sistema = window.sistemaTemplates;
-				
-				// 1. Verificar sistema
 				if (!sistema || !sistema.inicializado) {
-					alert('❌ Sistema não inicializado. Recarregue a página.');
+					alert('❌ Sistema de templates não inicializado. Recarregue a página.');
 					return;
 				}
 				
-				// 2. Verificar template
 				if (!sistema.templateSelecionado) {
 					alert('⚠️ Selecione um template antes de iniciar a análise.');
 					return;
 				}
 				
-				// 3. Verificar critérios
 				if (!sistema.criteriosEditados) {
 					alert('⚠️ Critérios não carregados. Selecione novamente o template.');
 					return;
 				}
 				
-				console.log('✅ Sistema e template OK');
+				console.log('✅ Sistema de templates OK');
 				
-				// 4. Validação melhorada de candidatos
-				const validacao = validarCandidatos();
+				// 2. Validação universal
+				const validacao = validacaoUniversal();
 				
 				if (!validacao.valido) {
 					alert('⚠️ ' + validacao.motivo);
 					return;
 				}
 				
-				console.log(`✅ Candidatos OK: ${validacao.candidatosCarregados} carregados, ${validacao.candidatosSelecionados} selecionados`);
+				console.log('✅ Validação OK:', validacao);
 				
-				// 5. Preparar dados
+				// 3. Preparar dados
 				const templateData = {
 					id: sistema.templateSelecionado,
 					nome: sistema.templatesDisponiveis[sistema.modoAtual][sistema.templateSelecionado].nome,
@@ -2512,158 +2591,195 @@
 					tipo: sistema.modoAtual === 'semantico' ? 'semantico' : 'tradicional'
 				};
 				
-				// 6. Atualizar sistema global
+				// 4. Integração com sistema existente
 				if (!window.templates) {
 					window.templates = {};
 				}
 				window.templates[sistema.templateSelecionado] = templateData;
+				
+				// Atualizar appState
 				window.appState.templateSelecionado = sistema.templateSelecionado;
 				window.appState.analiseSemanticaAtiva = (sistema.modoAtual === 'semantico');
 				
-				console.log('🎯 Dados preparados para análise:', {
+				console.log('🎯 Dados prontos:', {
 					template: templateData.nome,
 					tipo: templateData.tipo,
-					criterios: Object.keys(templateData.criterios).length,
-					candidatos: validacao.candidatosSelecionados
+					candidatos: validacao.candidatos,
+					selecionados: validacao.selecionados
 				});
 				
-				// 7. Chamar análise original
+				// 5. Chamar análise original
 				if (typeof iniciarAnalise === 'function') {
-					console.log('📊 Chamando função original iniciarAnalise...');
+					console.log('📊 Chamando iniciarAnalise()...');
 					iniciarAnalise();
 				} else {
 					console.error('❌ Função iniciarAnalise não encontrada');
-					alert('❌ Erro: Função de análise não encontrada no sistema.');
+					
+					// Última tentativa: procurar função similar
+					const funcoesPossiveis = Object.keys(window).filter(key => 
+						key.includes('analise') || key.includes('Analise')
+					);
+					
+					if (funcoesPossiveis.length > 0) {
+						console.log('🔍 Funções de análise encontradas:', funcoesPossiveis);
+						alert(`❌ Função 'iniciarAnalise' não encontrada.\n\nFunções disponíveis: ${funcoesPossiveis.join(', ')}\n\nVerifique seu app.js`);
+					} else {
+						alert('❌ Nenhuma função de análise encontrada no sistema.');
+					}
 				}
 				
 			} catch (error) {
-				console.error('❌ Erro ao iniciar análise:', error);
-				alert('❌ Erro ao iniciar análise.\n\nDetalhes: ' + error.message);
+				console.error('❌ Erro na análise universal:', error);
+				alert('❌ Erro na análise:\n\n' + error.message);
 			}
 		};
 
-		// === SOBRESCREVER FUNÇÕES DE MODO COM CORREÇÃO ===
-		const ativarModoTradicionalAnterior = window.ativarModoTradicional;
-		const ativarModoSemanticoAnterior = window.ativarModoSemantico;
-
-		window.ativarModoTradicional = function() {
-			console.log('📊 Ativando modo tradicional (versão corrigida)...');
+		// === CORREÇÃO DOS CARDS BRANCOS ===
+		function corrigirCardsBrancos() {
+			console.log('🎨 Corrigindo cards brancos...');
 			
 			try {
-				// Chamar função anterior
-				if (ativarModoTradicionalAnterior) {
-					ativarModoTradicionalAnterior();
-				}
-				
-				// Aguardar e corrigir
-				setTimeout(() => {
-					corrigirCardsModo();
-				}, 100);
-				
-				console.log('✅ Modo tradicional ativado e corrigido');
-				
-			} catch (error) {
-				console.error('❌ Erro na ativação do modo tradicional:', error);
-			}
-		};
-
-		window.ativarModoSemantico = function() {
-			console.log('🧠 Ativando modo semântico (versão corrigida)...');
-			
-			try {
-				// Chamar função anterior
-				if (ativarModoSemanticoAnterior) {
-					ativarModoSemanticoAnterior();
-				}
-				
-				// Aguardar e corrigir
-				setTimeout(() => {
-					corrigirCardsModo();
-				}, 100);
-				
-				console.log('✅ Modo semântico ativado e corrigido');
-				
-			} catch (error) {
-				console.error('❌ Erro na ativação do modo semântico:', error);
-			}
-		};
-
-		// === FUNÇÃO DE TESTE DOS CANDIDATOS ===
-		window.testarCandidatos = function() {
-			console.log('🧪 === TESTE DE CANDIDATOS ===');
-			
-			const validacao = validarCandidatos();
-			const debug = debugCandidatos();
-			
-			let relatorio = '🧪 TESTE DE CANDIDATOS\n\n';
-			
-			if (debug) {
-				relatorio += `📊 App State: ${debug.appStateExiste ? '✅' : '❌'}\n`;
-				relatorio += `👥 Candidatos: ${debug.candidatos_length}\n`;
-				relatorio += `✅ Selecionados: ${debug.candidatosSelecionados_size}\n`;
-				relatorio += `🔧 Tipo seleção: ${debug.candidatosSelecionados_tipo}\n\n`;
-			}
-			
-			if (validacao) {
-				relatorio += `🎯 Validação: ${validacao.valido ? '✅ OK' : '❌ ERRO'}\n`;
-				if (!validacao.valido) {
-					relatorio += `❌ Motivo: ${validacao.motivo}\n`;
-				} else {
-					relatorio += `📊 Carregados: ${validacao.candidatosCarregados}\n`;
-					relatorio += `✅ Selecionados: ${validacao.candidatosSelecionados}\n`;
-				}
-			}
-			
-			alert(relatorio);
-			return { validacao, debug };
-		};
-
-		// === CORREÇÃO AUTOMÁTICA ===
-		function aplicarCorrecaoAutomatica() {
-			try {
-				console.log('🔧 Aplicando correção automática...');
-				
-				// Corrigir cards de modo
-				corrigirCardsModo();
-				
-				// Adicionar CSS específico para cards de modo
+				// CSS específico para evitar cards brancos
 				const style = document.createElement('style');
+				style.id = 'correcao-cards-brancos';
 				style.innerHTML = `
-					/* === PROTEÇÃO ESPECÍFICA PARA CARDS DE MODO === */
+					/* === CORREÇÃO DEFINITIVA CARDS BRANCOS === */
 					#modo-tradicional, #modo-semantico {
-						background: white !important;
+						background-color: white !important;
+						background-image: none !important;
 						visibility: visible !important;
 						opacity: 1 !important;
 						display: block !important;
+						min-height: 80px !important;
+						border: 2px solid #ccc !important;
 						transition: all 0.3s ease !important;
 					}
 					
+					/* Estado ativo para modo tradicional */
+					#modo-tradicional[style*="border: 3px solid #3498db"], 
 					#modo-tradicional.ativo {
 						border: 3px solid #3498db !important;
 						background: linear-gradient(135deg, #ebf3fd, #d6e9f8) !important;
 					}
 					
+					/* Estado ativo para modo semântico */
+					#modo-semantico[style*="border: 3px solid #9b59b6"],
 					#modo-semantico.ativo {
 						border: 3px solid #9b59b6 !important;
 						background: linear-gradient(135deg, #f8f5ff, #f0ebff) !important;
 					}
+					
+					/* Garantir que o conteúdo seja visível */
+					#modo-tradicional *, #modo-semantico * {
+						visibility: visible !important;
+						opacity: 1 !important;
+					}
 				`;
+				
+				// Remover estilo anterior se existir
+				const estiloAnterior = document.getElementById('correcao-cards-brancos');
+				if (estiloAnterior) {
+					estiloAnterior.remove();
+				}
+				
 				document.head.appendChild(style);
 				
-				console.log('✅ Correção automática aplicada');
+				// Forçar atualização visual
+				const modoTradicional = document.getElementById('modo-tradicional');
+				const modoSemantico = document.getElementById('modo-semantico');
+				
+				if (modoTradicional) {
+					modoTradicional.style.background = 'white';
+					modoTradicional.style.visibility = 'visible';
+					modoTradicional.style.opacity = '1';
+				}
+				
+				if (modoSemantico) {
+					modoSemantico.style.background = 'white';
+					modoSemantico.style.visibility = 'visible';
+					modoSemantico.style.opacity = '1';
+				}
+				
+				console.log('✅ Correção de cards brancos aplicada');
 				
 			} catch (error) {
-				console.error('❌ Erro na correção automática:', error);
+				console.error('❌ Erro ao corrigir cards brancos:', error);
 			}
 		}
 
-		// === APLICAR CORREÇÕES IMEDIATAMENTE ===
-		setTimeout(aplicarCorrecaoAutomatica, 500);
-		setTimeout(aplicarCorrecaoAutomatica, 2000);
+		// === FUNÇÕES DE TESTE ===
+		window.investigarSistema = investigarSistemaCompleto;
+		window.testarCandidatos = function() {
+			console.log('🧪 === TESTE DE CANDIDATOS UNIVERSAL ===');
+			
+			const investigacao = investigarSistemaCompleto();
+			const candidatosEncontrados = encontrarCandidatos();
+			const selecionadosEncontrados = encontrarCandidatosSelecionados();
+			const validacao = validacaoUniversal();
+			
+			let relatorio = '🧪 TESTE UNIVERSAL\n\n';
+			relatorio += `🔍 Candidatos: ${candidatosEncontrados.candidatos.length} (${candidatosEncontrados.origem})\n`;
+			relatorio += `✅ Selecionados: ${selecionadosEncontrados.selecionados.length} (${selecionadosEncontrados.origem})\n`;
+			relatorio += `📊 AppState: ${window.appState ? '✅ Criado' : '❌ Inexistente'}\n`;
+			relatorio += `🎯 Validação: ${validacao.valido ? '✅ OK' : '❌ ' + validacao.motivo}\n`;
+			
+			alert(relatorio);
+			
+			return {
+				investigacao,
+				candidatos: candidatosEncontrados,
+				selecionados: selecionadosEncontrados,
+				validacao
+			};
+		};
 
-		console.log('✅ Correção específica carregada: Card branco + Candidatos');
-		
+		window.corrigirTudo = function() {
+			console.log('🔧 === CORREÇÃO COMPLETA ===');
+			
+			try {
+				// 1. Criar appState
+				criarAppState();
 				
+				// 2. Corrigir cards
+				corrigirCardsBrancos();
+				
+				// 3. Reativar modo atual
+				if (window.sistemaTemplates && window.sistemaTemplates.modoAtual) {
+					if (window.sistemaTemplates.modoAtual === 'semantico') {
+						setTimeout(() => window.ativarModoSemantico(), 100);
+					} else {
+						setTimeout(() => window.ativarModoTradicional(), 100);
+					}
+				}
+				
+				alert('🔧 Sistema corrigido!\n\n✅ AppState criado\n✅ Cards corrigidos\n✅ Modo reativado');
+				
+			} catch (error) {
+				console.error('❌ Erro na correção completa:', error);
+				alert('❌ Erro na correção: ' + error.message);
+			}
+		};
+
+		// === APLICAR CORREÇÕES AUTOMATICAMENTE ===
+		setTimeout(() => {
+			try {
+				console.log('🔧 Aplicando correções automáticas...');
+				corrigirCardsBrancos();
+				
+				if (!window.appState) {
+					criarAppState();
+				}
+				
+				console.log('✅ Correções automáticas aplicadas');
+			} catch (error) {
+				console.error('❌ Erro nas correções automáticas:', error);
+			}
+		}, 1000);
+
+		console.log('✅ SISTEMA UNIVERSAL CARREGADO!');
+		console.log('🧪 Teste com: testarCandidatos()');
+		console.log('🔧 Correção: corrigirTudo()');
+		console.log('🔍 Investigar: investigarSistema()');	
 		
 		
 		
