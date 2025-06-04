@@ -316,6 +316,405 @@
                 min-width: auto;
             }
         }
+		
+		
+		
+		
+		
+		/* === ESTILOS PARA EDITOR DE CRITÉRIOS === */
+		/* Adicione estes estilos no final do seu CSS atual */
+
+		/* Cards de modo */
+		.modo-card {
+			transition: all 0.3s ease;
+			position: relative;
+			overflow: hidden;
+		}
+
+		.modo-card:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+		}
+
+		.modo-card::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -100%;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+			transition: left 0.5s ease;
+		}
+
+		.modo-card:hover::before {
+			left: 100%;
+		}
+
+		/* Template cards melhorados */
+		.template-card {
+			transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+			position: relative;
+		}
+
+		.template-card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+		}
+
+		.template-card.selected {
+			transform: translateY(-3px);
+			box-shadow: 0 8px 30px rgba(46, 204, 113, 0.3);
+			animation: pulse-selected 2s infinite;
+		}
+
+		.template-card.semantic.selected {
+			box-shadow: 0 8px 30px rgba(155, 89, 182, 0.3);
+		}
+
+		@keyframes pulse-selected {
+			0%, 100% { 
+				box-shadow: 0 8px 30px rgba(46, 204, 113, 0.3);
+			}
+			50% { 
+				box-shadow: 0 12px 40px rgba(46, 204, 113, 0.5);
+			}
+		}
+
+		/* Status do template selecionado */
+		#templateSelecionadoStatus {
+			transition: all 0.5s ease;
+			animation: slideInDown 0.5s ease;
+		}
+
+		@keyframes slideInDown {
+			from {
+				opacity: 0;
+				transform: translateY(-20px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		/* Editor de critérios */
+		#editorCriterios {
+			transition: all 0.5s ease;
+			animation: fadeInUp 0.6s ease;
+		}
+
+		@keyframes fadeInUp {
+			from {
+				opacity: 0;
+				transform: translateY(30px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		/* Itens de critério */
+		.criterio-item {
+			transition: all 0.3s ease;
+			position: relative;
+			overflow: hidden;
+		}
+
+		.criterio-item:hover {
+			transform: translateX(5px);
+			box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+		}
+
+		.criterio-item::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 4px;
+			height: 100%;
+			background: linear-gradient(180deg, #3498db, #2ecc71);
+			transition: width 0.3s ease;
+		}
+
+		.criterio-item:hover::before {
+			width: 8px;
+		}
+
+		/* Sliders personalizados */
+		input[type="range"] {
+			-webkit-appearance: none;
+			width: 100px;
+			height: 6px;
+			border-radius: 3px;
+			background: #ddd;
+			outline: none;
+			transition: all 0.3s ease;
+		}
+
+		input[type="range"]::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			appearance: none;
+			width: 18px;
+			height: 18px;
+			border-radius: 50%;
+			background: #3498db;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			box-shadow: 0 2px 8px rgba(52, 152, 219, 0.4);
+		}
+
+		input[type="range"]::-webkit-slider-thumb:hover {
+			background: #2980b9;
+			transform: scale(1.2);
+			box-shadow: 0 4px 12px rgba(52, 152, 219, 0.6);
+		}
+
+		input[type="range"]::-moz-range-thumb {
+			width: 18px;
+			height: 18px;
+			border-radius: 50%;
+			background: #3498db;
+			cursor: pointer;
+			border: none;
+			transition: all 0.3s ease;
+			box-shadow: 0 2px 8px rgba(52, 152, 219, 0.4);
+		}
+
+		input[type="range"]::-moz-range-thumb:hover {
+			background: #2980b9;
+			transform: scale(1.2);
+		}
+
+		/* Sliders para modo semântico */
+		#editorCriterios[style*="9b59b6"] input[type="range"]::-webkit-slider-thumb {
+			background: #9b59b6;
+			box-shadow: 0 2px 8px rgba(155, 89, 182, 0.4);
+		}
+
+		#editorCriterios[style*="9b59b6"] input[type="range"]::-webkit-slider-thumb:hover {
+			background: #8e44ad;
+			box-shadow: 0 4px 12px rgba(155, 89, 182, 0.6);
+		}
+
+		/* Checkboxes personalizados */
+		input[type="checkbox"] {
+			width: 18px;
+			height: 18px;
+			accent-color: #3498db;
+			cursor: pointer;
+			transition: all 0.3s ease;
+		}
+
+		input[type="checkbox"]:hover {
+			transform: scale(1.1);
+		}
+
+		/* Checkboxes para modo semântico */
+		#editorCriterios[style*="9b59b6"] input[type="checkbox"] {
+			accent-color: #9b59b6;
+		}
+
+		/* Peso display melhorado */
+		span[id^="peso-"] {
+			background: rgba(52, 152, 219, 0.1);
+			padding: 4px 8px;
+			border-radius: 12px;
+			transition: all 0.3s ease;
+			font-size: 0.9em;
+		}
+
+		#editorCriterios[style*="9b59b6"] span[id^="peso-"] {
+			background: rgba(155, 89, 182, 0.1);
+		}
+
+		/* Botões do editor */
+		#editorCriterios .btn {
+			position: relative;
+			overflow: hidden;
+		}
+
+		#editorCriterios .btn::before {
+			content: '';
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			width: 0;
+			height: 0;
+			background: rgba(255, 255, 255, 0.3);
+			border-radius: 50%;
+			transform: translate(-50%, -50%);
+			transition: width 0.3s ease, height 0.3s ease;
+		}
+
+		#editorCriterios .btn:hover::before {
+			width: 300px;
+			height: 300px;
+		}
+
+		/* Indicadores de obrigatório */
+		.criterio-item:has(input[type="checkbox"]:checked) {
+			border-left-width: 6px !important;
+			background: linear-gradient(90deg, rgba(231, 76, 60, 0.05), white) !important;
+		}
+
+		/* Indicadores de peso */
+		.criterio-item:has(input[type="range"][value="10"]) span[id^="peso-"] {
+			background: linear-gradient(135deg, #e74c3c, #c0392b);
+			color: white;
+			font-weight: bold;
+			animation: pulse-high 2s infinite;
+		}
+
+		.criterio-item:has(input[type="range"][value="0"]) {
+			opacity: 0.5;
+			background: #f8f9fa !important;
+		}
+
+		.criterio-item:has(input[type="range"][value="0"]) span[id^="peso-"] {
+			background: #95a5a6;
+			color: white;
+		}
+
+		@keyframes pulse-high {
+			0%, 100% { transform: scale(1); }
+			50% { transform: scale(1.05); }
+		}
+
+		/* Tooltips informativos */
+		.info-tooltip {
+			position: relative;
+			cursor: help;
+		}
+
+		.info-tooltip::after {
+			content: attr(data-tooltip);
+			position: absolute;
+			bottom: 125%;
+			left: 50%;
+			transform: translateX(-50%);
+			background: rgba(0, 0, 0, 0.8);
+			color: white;
+			padding: 8px 12px;
+			border-radius: 6px;
+			font-size: 0.8em;
+			white-space: nowrap;
+			opacity: 0;
+			visibility: hidden;
+			transition: all 0.3s ease;
+			z-index: 1000;
+		}
+
+		.info-tooltip:hover::after {
+			opacity: 1;
+			visibility: visible;
+		}
+
+		/* Responsividade do editor */
+		@media (max-width: 768px) {
+			.criterio-item {
+				flex-direction: column;
+				align-items: flex-start !important;
+				gap: 15px;
+			}
+			
+			.criterio-item > div:last-child {
+				width: 100%;
+				justify-content: space-between;
+			}
+			
+			input[type="range"] {
+				width: 150px;
+			}
+			
+			.modo-card {
+				margin-bottom: 15px;
+			}
+		}
+
+		@media (max-width: 480px) {
+			#editorCriterios {
+				padding: 15px;
+			}
+			
+			.criterio-item {
+				padding: 12px;
+			}
+			
+			.template-card {
+				padding: 20px;
+			}
+		}
+
+		/* Estados de foco melhorados */
+		input[type="range"]:focus {
+			box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+		}
+
+		input[type="checkbox"]:focus {
+			outline: 3px solid rgba(52, 152, 219, 0.3);
+			outline-offset: 2px;
+		}
+
+		#editorCriterios[style*="9b59b6"] input[type="range"]:focus {
+			box-shadow: 0 0 0 3px rgba(155, 89, 182, 0.3);
+		}
+
+		#editorCriterios[style*="9b59b6"] input[type="checkbox"]:focus {
+			outline-color: rgba(155, 89, 182, 0.3);
+		}
+
+		/* Animação de loading para templates */
+		.templates-loading {
+			text-align: center;
+			padding: 40px;
+			color: #7f8c8d;
+		}
+
+		.templates-loading::before {
+			content: '🔄';
+			font-size: 2em;
+			display: block;
+			margin-bottom: 15px;
+			animation: spin 2s linear infinite;
+		}
+
+		/* Efeitos de entrada suaves */
+		.template-card {
+			animation: fadeInScale 0.6s ease forwards;
+			opacity: 0;
+			transform: scale(0.9);
+		}
+
+		.template-card:nth-child(1) { animation-delay: 0.1s; }
+		.template-card:nth-child(2) { animation-delay: 0.2s; }
+		.template-card:nth-child(3) { animation-delay: 0.3s; }
+		.template-card:nth-child(4) { animation-delay: 0.4s; }
+
+		@keyframes fadeInScale {
+			to {
+				opacity: 1;
+				transform: scale(1);
+			}
+		}
+
+		/* Debug button */
+		button[onclick="debugTemplate()"] {
+			background: linear-gradient(135deg, #f39c12, #e67e22);
+			font-size: 0.9em;
+		}
+
+		button[onclick="debugTemplate()"]:hover {
+			background: linear-gradient(135deg, #e67e22, #d35400);
+		}
+		
+		
+		
+		
+		
+		
+		
     </style>
 </head>
 <body>
@@ -470,55 +869,94 @@
             </div>
         </div>
 
-        <!-- === ABA 4: TEMPLATES & IA === -->
-        <div class="tab-content" id="templates">
-            <h2>📋 Templates de Avaliação</h2>
-            
-            <!-- === SELETOR DE MODO === -->
-            <div style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 15px; padding: 25px; margin-bottom: 30px; border-left: 5px solid #3498db;">
-                <h3 style="color: #2c3e50; margin-bottom: 15px;">🎯 Escolha o Tipo de Análise</h3>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <!-- Análise Tradicional -->
-                    <div class="modo-card tradicional" onclick="ativarModoTradicional()" style="background: white; padding: 20px; border-radius: 10px; cursor: pointer; border: 2px solid #3498db; transition: all 0.3s ease;">
-                        <div style="text-align: center;">
-                            <div style="font-size: 3em; margin-bottom: 15px;">📊</div>
-                            <h4 style="color: #2c3e50; margin-bottom: 10px;">Análise Tradicional</h4>
-                            <p style="color: #7f8c8d; font-size: 0.9em;">Templates pré-definidos com critérios fixos</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Análise Semântica -->
-                    <div class="modo-card semantica" onclick="ativarModoSemantico()" style="background: white; padding: 20px; border-radius: 10px; cursor: pointer; border: 2px solid #9b59b6; transition: all 0.3s ease;">
-                        <div style="text-align: center;">
-                            <div style="font-size: 3em; margin-bottom: 15px;">🧠</div>
-                            <h4 style="color: #2c3e50; margin-bottom: 10px;">Análise Semântica (IA)</h4>
-                            <p style="color: #7f8c8d; font-size: 0.9em;">Inteligência artificial para análise inteligente</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- === INDICADOR DE MODO ATIVO === -->
-            <div id="indicadorModo" class="hidden">
-                <!-- Será preenchido dinamicamente -->
-            </div>
 
-            <!-- === TEMPLATES === -->
-            <div id="templatesContainer">
-                <div class="templates-grid" id="templatesGrid">
-                    <!-- Templates serão carregados dinamicamente -->
-                </div>
-            </div>
+        <!-- === ABA 4: TEMPLATES & IA (VERSÃO CORRIGIDA) === -->
+		<div class="tab-content" id="templates">
+			<h2>📋 Templates de Avaliação</h2>
+			
+			<!-- === SELETOR DE MODO === -->
+			<div style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 15px; padding: 25px; margin-bottom: 30px; border-left: 5px solid #3498db;">
+				<h3 style="color: #2c3e50; margin-bottom: 15px;">🎯 Escolha o Tipo de Análise</h3>
+				
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+					<!-- Análise Tradicional -->
+					<div id="modo-tradicional" class="modo-card" onclick="ativarModoTradicional()" style="background: white; padding: 20px; border-radius: 10px; cursor: pointer; border: 3px solid #3498db; transition: all 0.3s ease;">
+						<div style="text-align: center;">
+							<div style="font-size: 3em; margin-bottom: 15px;">📊</div>
+							<h4 style="color: #2c3e50; margin-bottom: 10px;">Análise Tradicional</h4>
+							<p style="color: #7f8c8d; font-size: 0.9em;">Templates pré-definidos com critérios fixos</p>
+							<div style="margin-top: 10px; padding: 5px 10px; background: #3498db; color: white; border-radius: 15px; font-size: 0.8em; font-weight: bold;">ATIVO</div>
+						</div>
+					</div>
+					
+					<!-- Análise Semântica -->
+					<div id="modo-semantico" class="modo-card" onclick="ativarModoSemantico()" style="background: white; padding: 20px; border-radius: 10px; cursor: pointer; border: 2px solid #9b59b6; transition: all 0.3s ease;">
+						<div style="text-align: center;">
+							<div style="font-size: 3em; margin-bottom: 15px;">🧠</div>
+							<h4 style="color: #2c3e50; margin-bottom: 10px;">Análise Semântica (IA)</h4>
+							<p style="color: #7f8c8d; font-size: 0.9em;">Inteligência artificial para análise inteligente</p>
+							<div style="margin-top: 10px; padding: 5px 10px; background: #9b59b6; color: white; border-radius: 15px; font-size: 0.8em; font-weight: bold; display: none;" id="badge-semantico">ATIVO</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
-            <!-- === BOTÕES DE AÇÃO === -->
-            <div style="text-align: center; margin-top: 30px;">
-                <button class="btn secondary" onclick="showTab('selecao')">⬅️ Voltar: Seleção</button>
-                <button class="btn success" id="btnIniciarAnalise" onclick="iniciarAnalise()" disabled>🚀 Iniciar Análise</button>
-            </div>
-        </div>
+			<!-- === TEMPLATES === -->
+			<div id="templatesContainer">
+				<h3 id="tituloTemplates" style="color: #2c3e50; margin-bottom: 20px;">📊 Templates Tradicionais</h3>
+				<div class="templates-grid" id="templatesGrid">
+					<!-- Templates serão carregados dinamicamente -->
+				</div>
+			</div>
 
-        <!-- === ABA 5: ANÁLISE === -->
+			<!-- === STATUS DO TEMPLATE SELECIONADO === -->
+			<div id="templateSelecionadoStatus" class="hidden" style="background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #28a745;">
+				<strong>✅ Template Selecionado:</strong> <span id="nomeTemplateSelecionado"></span>
+				<div style="margin-top: 5px; font-size: 0.9em;">
+					<span id="tipoAnaliseStatus">📊 Análise Tradicional</span> • 
+					<span id="numeroCriteriosStatus">0 critérios</span>
+				</div>
+			</div>
+
+			<!-- === EDITOR DE CRITÉRIOS === -->
+			<div id="editorCriterios" class="hidden" style="background: #f8f9fa; border-radius: 15px; padding: 25px; margin: 25px 0; border-left: 5px solid #3498db;">
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+					<h3 style="color: #2c3e50; margin: 0;">⚙️ Personalizar Critérios</h3>
+					<div>
+						<button class="btn secondary" onclick="resetarCriterios()">🔄 Resetar</button>
+						<button class="btn" onclick="salvarTemplate()">💾 Salvar como Novo</button>
+					</div>
+				</div>
+				
+				<div id="listaCriterios">
+					<!-- Critérios serão carregados dinamicamente -->
+				</div>
+				
+				<div style="background: rgba(52, 152, 219, 0.1); padding: 15px; border-radius: 8px; margin-top: 15px;">
+					<h4 style="color: #2c3e50; margin-bottom: 10px;">💡 Como usar:</h4>
+					<div style="color: #34495e; font-size: 0.9em; line-height: 1.5;">
+						• <strong>Peso:</strong> Importância do critério (0-10). Maior peso = mais influência na pontuação<br>
+						• <strong>Obrigatório:</strong> Se marcado, candidatos sem este critério são penalizados<br>
+						• <strong>Peso 0:</strong> Desativa o critério completamente<br>
+						• <strong>Peso 10:</strong> Critério mais importante na avaliação
+					</div>
+				</div>
+			</div>
+
+			<!-- === BOTÕES DE AÇÃO === -->
+			<div style="text-align: center; margin-top: 30px;">
+				<button class="btn secondary" onclick="showTab('selecao')">⬅️ Voltar: Seleção</button>
+				<button class="btn success" id="btnIniciarAnalise" onclick="iniciarAnaliseCorrigida()" disabled>🚀 Iniciar Análise</button>
+				<button class="btn" onclick="debugTemplate()" style="margin-left: 10px;">🔍 Debug Template</button>
+			</div>
+		</div>
+        
+		
+		
+		
+		
+		<!-- === ABA 5: ANÁLISE === -->
         <div class="tab-content" id="analise">
             <h2>🔍 Análise em Andamento</h2>
             
@@ -742,6 +1180,457 @@
         window.ativarAnaliseSemantica = ativarModoSemantico;
         window.selecionarTemplate = selecionarTemplate;
         window.modoAnaliseAtual = modoAnaliseAtual;
+		
+		
+		
+		
+		
+		// === FUNÇÕES CORRIGIDAS ===
+		function ativarModoTradicional() {
+			console.log('📊 Ativando modo tradicional...');
+			window.sistemaTemplates.modoAtual = 'tradicional';
+			
+			// Atualizar visual dos cards
+			document.getElementById('modo-tradicional').style.border = '3px solid #3498db';
+			document.getElementById('modo-tradicional').style.background = 'linear-gradient(135deg, #ebf3fd, #d6e9f8)';
+			document.getElementById('modo-tradicional').querySelector('div:last-child').style.display = 'block';
+			
+			document.getElementById('modo-semantico').style.border = '2px solid #9b59b6';
+			document.getElementById('modo-semantico').style.background = 'white';
+			document.getElementById('badge-semantico').style.display = 'none';
+			
+			// Atualizar título
+			document.getElementById('tituloTemplates').innerHTML = '📊 Templates Tradicionais';
+			
+			// Carregar templates
+			carregarTemplatesTradicional();
+			
+			// Atualizar estado global (compatibilidade)
+			if (window.appState) {
+				window.appState.analiseSemanticaAtiva = false;
+			}
+			
+			console.log('✅ Modo tradicional ativado');
+		}
+
+		function ativarModoSemantico() {
+			console.log('🧠 Ativando modo semântico...');
+			window.sistemaTemplates.modoAtual = 'semantico';
+			
+			// Atualizar visual dos cards
+			document.getElementById('modo-semantico').style.border = '3px solid #9b59b6';
+			document.getElementById('modo-semantico').style.background = 'linear-gradient(135deg, #f8f5ff, #f0ebff)';
+			document.getElementById('badge-semantico').style.display = 'block';
+			
+			document.getElementById('modo-tradicional').style.border = '2px solid #3498db';
+			document.getElementById('modo-tradicional').style.background = 'white';
+			document.getElementById('modo-tradicional').querySelector('div:last-child').style.display = 'none';
+			
+			// Atualizar título
+			document.getElementById('tituloTemplates').innerHTML = '🧠 Templates Semânticos (IA)';
+			
+			// Carregar templates
+			carregarTemplatesSemantico();
+			
+			// Atualizar estado global (compatibilidade)
+			if (window.appState) {
+				window.appState.analiseSemanticaAtiva = true;
+			}
+			
+			console.log('✅ Modo semântico ativado');
+		}
+
+		function carregarTemplatesTradicional() {
+			const grid = document.getElementById('templatesGrid');
+			const templates = window.sistemaTemplates.templatesDisponiveis.tradicional;
+			
+			grid.innerHTML = '';
+			
+			Object.entries(templates).forEach(([id, template]) => {
+				const card = document.createElement('div');
+				card.className = 'template-card';
+				card.onclick = () => selecionarTemplateCorrigido(id);
+				card.setAttribute('data-template-id', id);
+				
+				card.innerHTML = `
+					<div class="template-title">📊 ${template.nome}</div>
+					<div class="template-description">${template.descricao}</div>
+					<div style="margin-top: 15px; font-size: 0.85em; color: #6c757d;">
+						<strong>Critérios:</strong> ${Object.keys(template.criterios).length} disponíveis
+					</div>
+				`;
+				
+				grid.appendChild(card);
+			});
+		}
+
+		function carregarTemplatesSemantico() {
+			const grid = document.getElementById('templatesGrid');
+			const templates = window.sistemaTemplates.templatesDisponiveis.semantico;
+			
+			grid.innerHTML = '';
+			
+			Object.entries(templates).forEach(([id, template]) => {
+				const card = document.createElement('div');
+				card.className = 'template-card semantic';
+				card.onclick = () => selecionarTemplateCorrigido(id);
+				card.setAttribute('data-template-id', id);
+				
+				card.innerHTML = `
+					<div class="template-title">${template.nome}</div>
+					<div class="template-description">${template.descricao}</div>
+					<div style="margin-top: 15px; font-size: 0.85em; color: #6c757d;">
+						<strong>Critérios IA:</strong> ${Object.keys(template.criterios).length} semânticos
+					</div>
+					<div style="margin-top: 10px; padding: 8px 12px; background: rgba(155, 89, 182, 0.1); border-radius: 8px;">
+						<small style="color: #8e44ad; font-weight: 600;">
+							🧠 Análise Semântica • Reconhecimento Inteligente
+						</small>
+					</div>
+				`;
+				
+				grid.appendChild(card);
+			});
+		}
+
+		function selecionarTemplateCorrigido(templateId) {
+			console.log(`✅ Selecionando template: ${templateId}`);
+			
+			// Remover seleção anterior
+			document.querySelectorAll('.template-card').forEach(card => {
+				card.classList.remove('selected');
+			});
+			
+			// Selecionar novo template
+			const cardSelecionado = document.querySelector(`[data-template-id="${templateId}"]`);
+			if (cardSelecionado) {
+				cardSelecionado.classList.add('selected');
+			}
+			
+			// Atualizar estado
+			window.sistemaTemplates.templateSelecionado = templateId;
+			
+			// Obter template
+			const modoAtual = window.sistemaTemplates.modoAtual;
+			const template = window.sistemaTemplates.templatesDisponiveis[modoAtual][templateId];
+			
+			if (!template) {
+				console.error(`❌ Template ${templateId} não encontrado no modo ${modoAtual}`);
+				return;
+			}
+			
+			// Clonar critérios para edição
+			window.sistemaTemplates.criteriosEditados = JSON.parse(JSON.stringify(template.criterios));
+			
+			// Atualizar estado global (compatibilidade)
+			if (window.appState) {
+				window.appState.templateSelecionado = templateId;
+			}
+			
+			// Atualizar status
+			mostrarStatusTemplate(template);
+			
+			// Mostrar editor
+			mostrarEditorCriterios(template);
+			
+			// Habilitar botão de análise
+			document.getElementById('btnIniciarAnalise').disabled = false;
+			
+			console.log(`✅ Template ${template.nome} selecionado com sucesso`);
+		}
+
+		function mostrarStatusTemplate(template) {
+			const status = document.getElementById('templateSelecionadoStatus');
+			const nomeTemplate = document.getElementById('nomeTemplateSelecionado');
+			const tipoAnalise = document.getElementById('tipoAnaliseStatus');
+			const numeroCriterios = document.getElementById('numeroCriteriosStatus');
+			
+			status.classList.remove('hidden');
+			nomeTemplate.textContent = template.nome;
+			
+			if (window.sistemaTemplates.modoAtual === 'semantico') {
+				tipoAnalise.innerHTML = '🧠 Análise Semântica (IA)';
+				status.style.background = 'linear-gradient(135deg, #f8f5ff, #f0ebff)';
+				status.style.color = '#4a148c';
+				status.style.borderLeftColor = '#9b59b6';
+			} else {
+				tipoAnalise.innerHTML = '📊 Análise Tradicional';
+				status.style.background = '#d4edda';
+				status.style.color = '#155724';
+				status.style.borderLeftColor = '#28a745';
+			}
+			
+			numeroCriterios.textContent = `${Object.keys(template.criterios).length} critérios`;
+		}
+
+		function mostrarEditorCriterios(template) {
+			const editor = document.getElementById('editorCriterios');
+			const listaCriterios = document.getElementById('listaCriterios');
+			
+			editor.classList.remove('hidden');
+			
+			// Limpar lista anterior
+			listaCriterios.innerHTML = '';
+			
+			// Criar item para cada critério
+			Object.entries(template.criterios).forEach(([chave, criterio]) => {
+				const item = document.createElement('div');
+				item.className = 'criterio-item';
+				item.style.cssText = `
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					padding: 15px;
+					background: white;
+					border-radius: 8px;
+					margin-bottom: 10px;
+					border-left: 4px solid ${window.sistemaTemplates.modoAtual === 'semantico' ? '#9b59b6' : '#3498db'};
+					box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+				`;
+				
+				item.innerHTML = `
+					<div style="font-weight: bold; flex: 1; color: #2c3e50;">
+						${criterio.nome}
+					</div>
+					<div style="display: flex; align-items: center; gap: 20px;">
+						<div style="display: flex; align-items: center; gap: 10px;">
+							<label style="font-size: 0.9em; color: #6c757d;">Peso:</label>
+							<input type="range" 
+								   min="0" max="10" 
+								   value="${criterio.peso}"
+								   onchange="atualizarPesoCriterio('${chave}', this.value)"
+								   style="width: 100px;">
+							<span id="peso-${chave}" style="min-width: 30px; font-weight: bold; color: ${window.sistemaTemplates.modoAtual === 'semantico' ? '#9b59b6' : '#3498db'};">
+								${criterio.peso}
+							</span>
+						</div>
+						<div style="display: flex; align-items: center; gap: 8px;">
+							<input type="checkbox" 
+								   ${criterio.obrigatorio ? 'checked' : ''}
+								   onchange="atualizarObrigatorioCriterio('${chave}', this.checked)"
+								   style="transform: scale(1.3);">
+							<label style="font-size: 0.9em; color: #6c757d;">Obrigatório</label>
+						</div>
+					</div>
+				`;
+				
+				listaCriterios.appendChild(item);
+			});
+			
+			// Atualizar cor do editor baseado no modo
+			if (window.sistemaTemplates.modoAtual === 'semantico') {
+				editor.style.borderLeftColor = '#9b59b6';
+				editor.style.background = 'linear-gradient(135deg, #f8f5ff, #f0ebff)';
+			} else {
+				editor.style.borderLeftColor = '#3498db';
+				editor.style.background = '#f8f9fa';
+			}
+		}
+
+		function atualizarPesoCriterio(chave, peso) {
+			peso = parseInt(peso);
+			window.sistemaTemplates.criteriosEditados[chave].peso = peso;
+			document.getElementById(`peso-${chave}`).textContent = peso;
+			
+			console.log(`⚙️ Peso do critério ${chave} atualizado para: ${peso}`);
+		}
+
+		function atualizarObrigatorioCriterio(chave, obrigatorio) {
+			window.sistemaTemplates.criteriosEditados[chave].obrigatorio = obrigatorio;
+			
+			console.log(`⚙️ Critério ${chave} ${obrigatorio ? 'marcado como obrigatório' : 'desmarcado como obrigatório'}`);
+		}
+
+		function resetarCriterios() {
+			if (!window.sistemaTemplates.templateSelecionado) return;
+			
+			const modoAtual = window.sistemaTemplates.modoAtual;
+			const templateId = window.sistemaTemplates.templateSelecionado;
+			const templateOriginal = window.sistemaTemplates.templatesDisponiveis[modoAtual][templateId];
+			
+			// Resetar critérios para valores originais
+			window.sistemaTemplates.criteriosEditados = JSON.parse(JSON.stringify(templateOriginal.criterios));
+			
+			// Recarregar editor
+			mostrarEditorCriterios(templateOriginal);
+			
+			console.log('🔄 Critérios resetados para valores originais');
+		}
+
+		function salvarTemplate() {
+			if (!window.sistemaTemplates.templateSelecionado || !window.sistemaTemplates.criteriosEditados) {
+				alert('❌ Nenhum template selecionado para salvar.');
+				return;
+			}
+			
+			const nomeTemplate = prompt('📝 Digite um nome para seu template personalizado:', 
+				`Template Personalizado - ${new Date().toLocaleDateString()}`);
+			
+			if (!nomeTemplate || nomeTemplate.trim() === '') {
+				return;
+			}
+			
+			try {
+				const templatePersonalizado = {
+					nome: nomeTemplate.trim(),
+					descricao: `Template personalizado criado em ${new Date().toLocaleDateString()}`,
+					criterios: JSON.parse(JSON.stringify(window.sistemaTemplates.criteriosEditados)),
+					dataCreacao: new Date().toISOString(),
+					modo: window.sistemaTemplates.modoAtual,
+					baseTemplate: window.sistemaTemplates.templateSelecionado
+				};
+				
+				// Salvar no localStorage
+				let templatesPersonalizados = JSON.parse(localStorage.getItem('templatesPersonalizados') || '{}');
+				const chaveTemplate = `custom_${Date.now()}`;
+				templatesPersonalizados[chaveTemplate] = templatePersonalizado;
+				localStorage.setItem('templatesPersonalizados', JSON.stringify(templatesPersonalizados));
+				
+				alert(`✅ Template "${nomeTemplate}" salvo com sucesso!\n\nVocê pode encontrá-lo na próxima vez que abrir o sistema.`);
+				
+				console.log('💾 Template personalizado salvo:', templatePersonalizado);
+				
+			} catch (error) {
+				console.error('❌ Erro ao salvar template:', error);
+				alert('❌ Erro ao salvar template. Tente novamente.');
+			}
+		}
+
+		function iniciarAnaliseCorrigida() {
+			console.log('🚀 Iniciando análise corrigida...');
+			
+			// Validações
+			if (!window.sistemaTemplates.templateSelecionado) {
+				alert('❌ Nenhum template selecionado!\n\nPor favor, clique em um template antes de iniciar a análise.');
+				return;
+			}
+			
+			if (!window.sistemaTemplates.criteriosEditados) {
+				alert('❌ Critérios não carregados!\n\nTente selecionar o template novamente.');
+				return;
+			}
+			
+			// Verificar candidatos
+			if (!window.appState || !window.appState.candidatos || window.appState.candidatos.length === 0) {
+				alert('❌ Nenhum candidato carregado!\n\nFaça o upload do PDF primeiro.');
+				return;
+			}
+			
+			if (!window.appState.candidatosSelecionados || window.appState.candidatosSelecionados.size === 0) {
+				alert('❌ Nenhum candidato selecionado!\n\nVá para a aba "Seleção" e marque os candidatos desejados.');
+				return;
+			}
+			
+			// Verificar configuração da vaga
+			const cargo = document.getElementById('cargoVaga').value.trim();
+			const endereco = document.getElementById('enderecoVaga').value.trim();
+			
+			if (!cargo) {
+				alert('❌ Campo "Cargo/Posição" é obrigatório!\n\nVá para a aba "Configuração" e preencha os dados da vaga.');
+				return;
+			}
+			
+			if (!endereco) {
+				alert('❌ Campo "Localização da Vaga" é obrigatório!\n\nVá para a aba "Configuração" e valide o endereço.');
+				return;
+			}
+			
+			// Atualizar estado global com template corrigido
+			const modoAtual = window.sistemaTemplates.modoAtual;
+			const templateSelecionado = window.sistemaTemplates.templatesDisponiveis[modoAtual][window.sistemaTemplates.templateSelecionado];
+			
+			// Criar template no formato esperado pelo app.js
+			if (!window.templates) {
+				window.templates = {};
+			}
+			
+			window.templates[window.sistemaTemplates.templateSelecionado] = {
+				nome: templateSelecionado.nome,
+				descricao: templateSelecionado.descricao,
+				criterios: window.sistemaTemplates.criteriosEditados,
+				tipo: modoAtual === 'semantico' ? 'semantico' : 'tradicional'
+			};
+			
+			// Atualizar appState
+			window.appState.templateSelecionado = window.sistemaTemplates.templateSelecionado;
+			window.appState.analiseSemanticaAtiva = (modoAtual === 'semantico');
+			
+			console.log('✅ Estado atualizado para análise:');
+			console.log('- Template:', window.sistemaTemplates.templateSelecionado);
+			console.log('- Modo:', modoAtual);
+			console.log('- Critérios editados:', Object.keys(window.sistemaTemplates.criteriosEditados).length);
+			console.log('- Análise semântica:', window.appState.analiseSemanticaAtiva);
+			
+			// Chamar função original de iniciar análise
+			if (typeof window.iniciarAnalise === 'function') {
+				window.iniciarAnalise();
+			} else {
+				console.error('❌ Função iniciarAnalise não encontrada no app.js');
+				alert('❌ Erro interno: Função de análise não encontrada.');
+			}
+		}
+
+		function debugTemplate() {
+			console.log('🔍 === DEBUG DO TEMPLATE ===');
+			
+			const debug = {
+				modoAtual: window.sistemaTemplates.modoAtual,
+				templateSelecionado: window.sistemaTemplates.templateSelecionado,
+				criteriosEditados: window.sistemaTemplates.criteriosEditados ? Object.keys(window.sistemaTemplates.criteriosEditados).length : 0,
+				estadoGlobal: {
+					appState: !!window.appState,
+					candidatos: window.appState?.candidatos?.length || 0,
+					candidatosSelecionados: window.appState?.candidatosSelecionados?.size || 0,
+					analiseSemanticaAtiva: window.appState?.analiseSemanticaAtiva
+				}
+			};
+			
+			console.table(debug);
+			
+			let relatorio = '🔍 DEBUG DO TEMPLATE\n\n';
+			relatorio += `📊 Modo: ${debug.modoAtual}\n`;
+			relatorio += `📋 Template: ${debug.templateSelecionado || 'NENHUM'}\n`;
+			relatorio += `⚙️ Critérios editados: ${debug.criteriosEditados}\n`;
+			relatorio += `👥 Candidatos: ${debug.estadoGlobal.candidatos}\n`;
+			relatorio += `✅ Selecionados: ${debug.estadoGlobal.candidatosSelecionados}\n`;
+			relatorio += `🧠 IA ativa: ${debug.estadoGlobal.analiseSemanticaAtiva}\n`;
+			
+			if (!debug.templateSelecionado) {
+				relatorio += '\n❌ PROBLEMA: Nenhum template selecionado!';
+			} else if (debug.criteriosEditados === 0) {
+				relatorio += '\n❌ PROBLEMA: Critérios não carregados!';
+			} else {
+				relatorio += '\n✅ SISTEMA OK - Pronto para análise!';
+			}
+			
+			alert(relatorio);
+		}
+
+		// === INICIALIZAÇÃO ===
+		document.addEventListener('DOMContentLoaded', function() {
+			console.log('🔧 Inicializando sistema de templates corrigido...');
+			
+			// Aguardar carregamento do app.js
+			setTimeout(() => {
+				// Ativar modo tradicional por padrão
+				ativarModoTradicional();
+				
+				console.log('✅ Sistema de templates inicializado');
+			}, 500);
+		});
+
+		console.log('✅ Correções do sistema de templates carregadas!');
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
     </script>
 </body>
 </html>
