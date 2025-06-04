@@ -1106,79 +1106,52 @@
 	
 	
 	
-	
-	
-	// === LIMPEZA FORÇADA + SUBSTITUIÇÃO COMPLETA ===
-		console.log('🧹 === LIMPEZA FORÇADA DE TODAS AS VERSÕES ANTERIORES ===');
+	// === VERSÃO LIMPA E FUNCIONAL ===
+		console.log('🔧 === CORREÇÃO LIMPA - SEM CONFLITOS ===');
 
-		// === REMOVER TODAS AS FUNÇÕES ANTERIORES ===
+		// === LIMPEZA INICIAL ===
 		try {
-			// Lista de funções para remover/substituir
+			// Remover versões antigas conflitantes
 			const funcoesParaLimpar = [
-				'iniciarAnaliseCorrigida',
-				'validarCandidatos', 
-				'debugCandidatos',
-				'testarCandidatos',
-				'corrigirTudo',
-				'repararSistema',
-				'testarSistemaCompleto'
+				'iniciarAnaliseCorrigida', 'testarSistemaCompleto', 'debug', 'corrigirTudo'
 			];
 			
 			funcoesParaLimpar.forEach(funcao => {
 				if (window[funcao]) {
-					console.log(`🗑️ Removendo função antiga: ${funcao}`);
 					delete window[funcao];
 				}
 			});
 			
-			console.log('✅ Funções antigas removidas');
+			// Remover CSS conflitante
+			const estilosConflitantes = document.querySelectorAll('style[id*="correcao"], style[id*="cards"], style[id*="definitiva"]');
+			estilosConflitantes.forEach(estilo => estilo.remove());
+			
+			console.log('✅ Limpeza concluída');
+			
 		} catch (error) {
-			console.log('⚠️ Erro na limpeza (normal):', error.message);
+			console.log('⚠️ Limpeza (normal):', error.message);
 		}
 
-		// === FUNÇÃO UNIVERSAL PARA ENCONTRAR CANDIDATOS ===
-		function encontrarCandidatosUniversal() {
-			console.log('🔍 === BUSCA UNIVERSAL POR CANDIDATOS ===');
+		// === BUSCA UNIVERSAL DE CANDIDATOS ===
+		function encontrarCandidatos() {
+			console.log('🔍 Buscando candidatos...');
 			
-			// Lista de todos os locais possíveis onde podem estar os candidatos
-			const locaisPossiveis = [
-				// Objetos window
+			const locais = [
 				{ nome: 'window.candidatos', valor: () => window.candidatos },
 				{ nome: 'window.appState.candidatos', valor: () => window.appState?.candidatos },
 				{ nome: 'window.cvData', valor: () => window.cvData },
-				{ nome: 'window.dados', valor: () => window.dados },
-				{ nome: 'window.app.candidatos', valor: () => window.app?.candidatos },
-				{ nome: 'window.state.candidatos', valor: () => window.state?.candidatos },
-				
-				// LocalStorage
 				{ nome: 'localStorage.candidatos', valor: () => {
 					try {
 						const stored = localStorage.getItem('candidatos');
 						return stored ? JSON.parse(stored) : null;
 					} catch { return null; }
 				}},
-				{ nome: 'localStorage.cvs', valor: () => {
-					try {
-						const stored = localStorage.getItem('cvs');
-						return stored ? JSON.parse(stored) : null;
-					} catch { return null; }
-				}},
-				{ nome: 'localStorage.appState', valor: () => {
-					try {
-						const stored = localStorage.getItem('appState');
-						const parsed = stored ? JSON.parse(stored) : null;
-						return parsed?.candidatos || null;
-					} catch { return null; }
-				}},
-				
-				// Elementos DOM
 				{ nome: 'elementos DOM', valor: () => {
 					const elementos = document.querySelectorAll('[data-candidato], .candidato-item, .cv-item');
 					if (elementos.length > 0) {
 						return Array.from(elementos).map((el, index) => ({
 							id: index,
 							nome: el.textContent?.trim() || `Candidato ${index + 1}`,
-							elemento: el,
 							origem: 'DOM'
 						}));
 					}
@@ -1186,485 +1159,24 @@
 				}}
 			];
 			
-			let candidatosEncontrados = [];
-			let origemEncontrada = 'nenhuma';
-			
-			// Testar cada local
-			for (const local of locaisPossiveis) {
+			for (const local of locais) {
 				try {
 					const resultado = local.valor();
-					
 					if (resultado && Array.isArray(resultado) && resultado.length > 0) {
-						candidatosEncontrados = resultado;
-						origemEncontrada = local.nome;
-						console.log(`✅ Candidatos encontrados em: ${local.nome} (${resultado.length} candidatos)`);
-						break;
-					} else if (resultado && typeof resultado === 'object' && !Array.isArray(resultado)) {
-						// Se é um objeto, verificar se tem propriedades que parecem candidatos
-						const chaves = Object.keys(resultado);
-						if (chaves.length > 0) {
-							candidatosEncontrados = chaves.map(chave => ({
-								id: chave,
-								nome: resultado[chave].nome || resultado[chave].name || chave,
-								dados: resultado[chave]
-							}));
-							origemEncontrada = local.nome + ' (convertido de objeto)';
-							console.log(`✅ Candidatos encontrados em: ${local.nome} (${chaves.length} candidatos convertidos)`);
-							break;
-						}
+						console.log(`✅ Encontrados em: ${local.nome} (${resultado.length} candidatos)`);
+						return { candidatos: resultado, origem: local.nome, total: resultado.length };
 					}
 				} catch (error) {
-					console.warn(`⚠️ Erro ao verificar ${local.nome}:`, error.message);
+					console.warn(`⚠️ Erro em ${local.nome}:`, error.message);
 				}
 			}
 			
-			// Se ainda não encontrou, criar candidatos de exemplo
-			if (candidatosEncontrados.length === 0) {
-				console.log('⚠️ Nenhum candidato encontrado, criando dados de exemplo...');
-				candidatosEncontrados = [
-					{ id: 0, nome: 'Candidato Exemplo 1', origem: 'gerado' },
-					{ id: 1, nome: 'Candidato Exemplo 2', origem: 'gerado' },
-					{ id: 2, nome: 'Candidato Exemplo 3', origem: 'gerado' }
-				];
-				origemEncontrada = 'gerado automaticamente';
-			}
-			
-			console.log(`📊 Total encontrado: ${candidatosEncontrados.length} candidatos de: ${origemEncontrada}`);
-			
-			return {
-				candidatos: candidatosEncontrados,
-				origem: origemEncontrada,
-				total: candidatosEncontrados.length
-			};
-		}
-
-		// === CRIAR SISTEMA COMPATÍVEL ===
-		function criarSistemaCompativel() {
-			console.log('🔧 === CRIANDO SISTEMA COMPATÍVEL ===');
-			
-			try {
-				// Encontrar candidatos
-				const resultado = encontrarCandidatosUniversal();
-				
-				// Criar window.appState se não existir
-				if (!window.appState) {
-					window.appState = {};
-				}
-				
-				// Configurar candidatos
-				window.appState.candidatos = resultado.candidatos;
-				
-				// Criar seleção (todos selecionados por padrão)
-				const todosIds = resultado.candidatos.map((_, index) => index);
-				window.appState.candidatosSelecionados = new Set(todosIds);
-				
-				// Outras propriedades necessárias
-				window.appState.analiseSemanticaAtiva = false;
-				window.appState.templateSelecionado = null;
-				window.appState.origem = resultado.origem;
-				window.appState.criadoEm = new Date().toISOString();
-				
-				console.log('✅ Sistema compatível criado!');
-				console.log('📊 Candidatos configurados:', resultado.total);
-				console.log('✅ Todos selecionados por padrão');
-				console.log('🔧 Origem dos dados:', resultado.origem);
-				
-				return true;
-				
-			} catch (error) {
-				console.error('❌ Erro ao criar sistema compatível:', error);
-				return false;
-			}
-		}
-
-		// === NOVA FUNÇÃO DE ANÁLISE (DEFINITIVA) ===
-		window.iniciarAnaliseCorrigida = function() {
-			console.log('🚀 === ANÁLISE DEFINITIVA (VERSÃO FINAL) ===');
-			
-			try {
-				// 1. Verificar/criar sistema compatível
-				if (!window.appState || !window.appState.candidatos || window.appState.candidatos.length === 0) {
-					console.log('🔧 Sistema não encontrado, criando...');
-					const sucesso = criarSistemaCompativel();
-					if (!sucesso) {
-						alert('❌ Não foi possível configurar o sistema de candidatos.');
-						return;
-					}
-				}
-				
-				// 2. Verificar templates
-				const sistema = window.sistemaTemplates;
-				if (!sistema || !sistema.inicializado) {
-					alert('❌ Sistema de templates não inicializado. Recarregue a página.');
-					return;
-				}
-				
-				if (!sistema.templateSelecionado) {
-					alert('⚠️ Selecione um template antes de iniciar a análise.');
-					return;
-				}
-				
-				if (!sistema.criteriosEditados) {
-					alert('⚠️ Critérios não carregados. Selecione novamente o template.');
-					return;
-				}
-				
-				console.log('✅ Templates OK');
-				
-				// 3. Validar candidatos
-				const candidatos = window.appState.candidatos;
-				const selecionados = window.appState.candidatosSelecionados;
-				
-				if (!candidatos || candidatos.length === 0) {
-					alert('⚠️ Nenhum candidato encontrado. Faça upload dos CVs primeiro.');
-					return;
-				}
-				
-				if (!selecionados || selecionados.size === 0) {
-					// Selecionar todos automaticamente
-					console.log('🔄 Selecionando todos os candidatos automaticamente...');
-					window.appState.candidatosSelecionados = new Set(candidatos.map((_, index) => index));
-				}
-				
-				console.log(`✅ Candidatos validados: ${candidatos.length} total, ${window.appState.candidatosSelecionados.size} selecionados`);
-				
-				// 4. Preparar dados do template
-				const templateData = {
-					id: sistema.templateSelecionado,
-					nome: sistema.templatesDisponiveis[sistema.modoAtual][sistema.templateSelecionado].nome,
-					descricao: sistema.templatesDisponiveis[sistema.modoAtual][sistema.templateSelecionado].descricao,
-					criterios: sistema.criteriosEditados,
-					tipo: sistema.modoAtual === 'semantico' ? 'semantico' : 'tradicional'
-				};
-				
-				// 5. Configurar sistema global
-				if (!window.templates) {
-					window.templates = {};
-				}
-				window.templates[sistema.templateSelecionado] = templateData;
-				window.appState.templateSelecionado = sistema.templateSelecionado;
-				window.appState.analiseSemanticaAtiva = (sistema.modoAtual === 'semantico');
-				
-				console.log('🎯 === DADOS PREPARADOS ===');
-				console.log('📋 Template:', templateData.nome);
-				console.log('🧠 Tipo:', templateData.tipo);
-				console.log('⚙️ Critérios:', Object.keys(templateData.criterios).length);
-				console.log('👥 Candidatos:', candidatos.length);
-				console.log('✅ Selecionados:', window.appState.candidatosSelecionados.size);
-				console.log('🔧 Origem:', window.appState.origem);
-				
-				// 6. Chamar função de análise
-				if (typeof iniciarAnalise === 'function') {
-					console.log('📊 === CHAMANDO ANÁLISE ORIGINAL ===');
-					iniciarAnalise();
-				} else {
-					console.error('❌ Função iniciarAnalise não encontrada');
-					
-					// Procurar funções similares
-					const funcoesSimilares = Object.keys(window).filter(key => 
-						typeof window[key] === 'function' && 
-						(key.toLowerCase().includes('analise') || 
-						 key.toLowerCase().includes('analyze') ||
-						 key.toLowerCase().includes('processar'))
-					);
-					
-					if (funcoesSimilares.length > 0) {
-						const mensagem = `❌ Função 'iniciarAnalise' não encontrada.\n\n` +
-									   `Funções similares disponíveis:\n${funcoesSimilares.join('\n')}\n\n` +
-									   `Verifique o nome correto da função no seu app.js`;
-						alert(mensagem);
-						console.log('🔍 Funções similares encontradas:', funcoesSimilares);
-					} else {
-						alert('❌ Nenhuma função de análise encontrada.\n\nVerifique se o app.js foi carregado corretamente.');
-					}
-				}
-				
-			} catch (error) {
-				console.error('❌ ERRO NA ANÁLISE DEFINITIVA:', error);
-				
-				const mensagemErro = `❌ Erro na análise:\n\n` +
-								   `Erro: ${error.message}\n\n` +
-								   `Verifique o console para mais detalhes.`;
-				alert(mensagemErro);
-			}
-		};
-
-		// === CORREÇÃO DOS CARDS BRANCOS (DEFINITIVA) ===
-		function corrigirCardsBrancosDefinitivo() {
-			console.log('🎨 === CORREÇÃO DEFINITIVA CARDS BRANCOS ===');
-			
-			try {
-				// Remover estilos conflitantes anteriores
-				const estilosAntigos = document.querySelectorAll('style[id*="correcao"], style[id*="cards"]');
-				estilosAntigos.forEach(estilo => estilo.remove());
-				
-				// CSS com máxima prioridade
-				const style = document.createElement('style');
-				style.id = 'correcao-definitiva-cards';
-				style.innerHTML = `
-					/* === CORREÇÃO DEFINITIVA - CARDS NUNCA BRANCOS === */
-					#modo-tradicional, #modo-semantico {
-						background-color: white !important;
-						background-image: none !important;
-						background: white !important;
-						visibility: visible !important;
-						opacity: 1 !important;
-						display: block !important;
-						color: inherit !important;
-						min-height: 80px !important;
-						border: 2px solid #dee2e6 !important;
-						transition: all 0.3s ease !important;
-						position: relative !important;
-						overflow: visible !important;
-					}
-					
-					/* Forçar conteúdo visível */
-					#modo-tradicional *, #modo-semantico * {
-						visibility: visible !important;
-						opacity: 1 !important;
-						color: inherit !important;
-						display: inherit !important;
-					}
-					
-					/* Estados ativos específicos */
-					#modo-tradicional[style*="border: 3px solid #3498db"] {
-						border: 3px solid #3498db !important;
-						background: linear-gradient(135deg, #ebf3fd, #d6e9f8) !important;
-					}
-					
-					#modo-semantico[style*="border: 3px solid #9b59b6"] {
-						border: 3px solid #9b59b6 !important;
-						background: linear-gradient(135deg, #f8f5ff, #f0ebff) !important;
-					}
-					
-					/* Proteção extra contra estilos conflitantes */
-					.tab-content [id*="modo-"] {
-						background: white !important;
-					}
-				`;
-				
-				document.head.appendChild(style);
-				
-				// Forçar atualização dos elementos
-				setTimeout(() => {
-					const modoTradicional = document.getElementById('modo-tradicional');
-					const modoSemantico = document.getElementById('modo-semantico');
-					
-					[modoTradicional, modoSemantico].forEach(elemento => {
-						if (elemento) {
-							elemento.style.cssText += '; background: white !important; visibility: visible !important; opacity: 1 !important;';
-							
-							// Forçar repaint
-							elemento.offsetHeight;
-						}
-					});
-				}, 100);
-				
-				console.log('✅ Correção definitiva de cards aplicada');
-				
-			} catch (error) {
-				console.error('❌ Erro na correção de cards:', error);
-			}
-		}
-
-		// === FUNÇÕES DE TESTE E DEBUG ===
-		window.testarSistemaCompleto = function() {
-			console.log('🧪 === TESTE COMPLETO DO SISTEMA ===');
-			
-			try {
-				// Informações do sistema
-				const info = {
-					// Sistema de templates
-					sistemaTemplates: !!(window.sistemaTemplates && window.sistemaTemplates.inicializado),
-					templateSelecionado: window.sistemaTemplates?.templateSelecionado || 'nenhum',
-					modoAtual: window.sistemaTemplates?.modoAtual || 'indefinido',
-					
-					// Sistema de candidatos
-					appStateExiste: !!window.appState,
-					candidatosTotal: window.appState?.candidatos?.length || 0,
-					candidatosSelecionados: window.appState?.candidatosSelecionados?.size || 0,
-					origemCandidatos: window.appState?.origem || 'desconhecida',
-					
-					// Funções disponíveis
-					funcaoAnalise: typeof window.iniciarAnalise,
-					funcaoAnaliseCorrigida: typeof window.iniciarAnaliseCorrigida,
-					
-					// Elementos HTML
-					elementosBotao: !!document.getElementById('btnIniciarAnalise'),
-					elementosGrid: !!document.getElementById('templatesGrid'),
-					elementosModos: {
-						tradicional: !!document.getElementById('modo-tradicional'),
-						semantico: !!document.getElementById('modo-semantico')
-					}
-				};
-				
-				console.table(info);
-				
-				// Resultado textual
-				let resultado = '🧪 TESTE COMPLETO\n\n';
-				resultado += `🔧 Sistema Templates: ${info.sistemaTemplates ? '✅' : '❌'}\n`;
-				resultado += `📋 Template: ${info.templateSelecionado}\n`;
-				resultado += `📊 Modo: ${info.modoAtual}\n`;
-				resultado += `👥 Candidatos: ${info.candidatosTotal}\n`;
-				resultado += `✅ Selecionados: ${info.candidatosSelecionados}\n`;
-				resultado += `🔧 Origem: ${info.origemCandidatos}\n`;
-				resultado += `🎯 Função análise: ${info.funcaoAnalise}\n`;
-				resultado += `🔄 Função corrigida: ${info.funcaoAnaliseCorrigida}\n\n`;
-				
-				if (!info.sistemaTemplates) {
-					resultado += '❌ ERRO: Sistema de templates não inicializado\n';
-				} else if (info.candidatosTotal === 0) {
-					resultado += '⚠️ AVISO: Nenhum candidato encontrado\n';
-				} else if (info.funcaoAnalise !== 'function') {
-					resultado += '❌ ERRO: Função iniciarAnalise não encontrada\n';
-				} else {
-					resultado += '🎉 SISTEMA OK - Pronto para análise!';
-				}
-				
-				alert(resultado);
-				return info;
-				
-			} catch (error) {
-				console.error('❌ Erro no teste:', error);
-				alert('❌ Erro no teste: ' + error.message);
-			}
-		};
-
-		window.debug = function() {
-			console.log('🔍 === DEBUG RÁPIDO ===');
-			
-			const candidatos = encontrarCandidatosUniversal();
-			const sistemaOK = criarSistemaCompativel();
-			
-			console.log('📊 Candidatos encontrados:', candidatos);
-			console.log('🔧 Sistema criado:', sistemaOK);
-			
-			alert(`🔍 DEBUG RÁPIDO\n\n📊 Candidatos: ${candidatos.total}\n🔧 Origem: ${candidatos.origem}\n✅ Sistema: ${sistemaOK ? 'OK' : 'ERRO'}`);
-		};
-
-		window.corrigirTudo = function() {
-			console.log('🔧 === CORREÇÃO TOTAL ===');
-			
-			try {
-				// 1. Criar sistema
-				criarSistemaCompativel();
-				
-				// 2. Corrigir cards
-				corrigirCardsBrancosDefinitivo();
-				
-				// 3. Reativar modo
-				setTimeout(() => {
-					if (window.sistemaTemplates?.modoAtual === 'semantico') {
-						window.ativarModoSemantico?.();
-					} else {
-						window.ativarModoTradicional?.();
-					}
-				}, 200);
-				
-				alert('🔧 CORREÇÃO TOTAL APLICADA!\n\n✅ Sistema criado\n✅ Cards corrigidos\n✅ Modo reativado');
-				
-			} catch (error) {
-				console.error('❌ Erro na correção total:', error);
-				alert('❌ Erro: ' + error.message);
-			}
-		};
-
-		// === APLICAÇÃO AUTOMÁTICA ===
-		setTimeout(() => {
-			try {
-				console.log('🔄 === APLICAÇÃO AUTOMÁTICA ===');
-				
-				// Criar sistema se necessário
-				if (!window.appState || !window.appState.candidatos) {
-					criarSistemaCompativel();
-				}
-				
-				// Corrigir cards
-				corrigirCardsBrancosDefinitivo();
-				
-				console.log('✅ Aplicação automática concluída');
-				
-			} catch (error) {
-				console.error('❌ Erro na aplicação automática:', error);
-			}
-		}, 1000);
-
-		console.log('✅ === SISTEMA DEFINITIVO CARREGADO ===');
-		console.log('🧪 Teste: testarSistemaCompleto()');
-		console.log('🔍 Debug: debug()');
-		console.log('🔧 Corrigir: corrigirTudo()');
-
-			
-			
-			
-			// === CORREÇÃO CIRÚRGICA PARA SEU CSS EXISTENTE ===
-		console.log('🔧 === CORREÇÃO CIRÚRGICA - COMPATÍVEL COM SEU CSS ===');
-
-		// === FUNÇÃO UNIVERSAL PARA ENCONTRAR CANDIDATOS (SEM MEXER NO CSS) ===
-		function encontrarCandidatosCompativel() {
-			console.log('🔍 Procurando candidatos no seu sistema...');
-			
-			const locaisPossiveis = [
-				{ nome: 'window.candidatos', valor: () => window.candidatos },
-				{ nome: 'window.appState.candidatos', valor: () => window.appState?.candidatos },
-				{ nome: 'window.cvData', valor: () => window.cvData },
-				{ nome: 'window.dados', valor: () => window.dados },
-				{ nome: 'localStorage.candidatos', valor: () => {
-					try {
-						const stored = localStorage.getItem('candidatos');
-						return stored ? JSON.parse(stored) : null;
-					} catch { return null; }
-				}},
-				{ nome: 'localStorage.cvs', valor: () => {
-					try {
-						const stored = localStorage.getItem('cvs');
-						return stored ? JSON.parse(stored) : null;
-					} catch { return null; }
-				}},
-				{ nome: 'localStorage.appState', valor: () => {
-					try {
-						const stored = localStorage.getItem('appState');
-						const parsed = stored ? JSON.parse(stored) : null;
-						return parsed?.candidatos || null;
-					} catch { return null; }
-				}},
-				{ nome: 'elementos DOM', valor: () => {
-					const elementos = document.querySelectorAll('[data-candidato], .candidato-item, .cv-item, .candidate-item');
-					if (elementos.length > 0) {
-						return Array.from(elementos).map((el, index) => ({
-							id: index,
-							nome: el.textContent?.trim() || `Candidato ${index + 1}`,
-							elemento: el,
-							origem: 'DOM'
-						}));
-					}
-					return null;
-				}}
-			];
-			
-			for (const local of locaisPossiveis) {
-				try {
-					const resultado = local.valor();
-					
-					if (resultado && Array.isArray(resultado) && resultado.length > 0) {
-						console.log(`✅ Candidatos encontrados em: ${local.nome} (${resultado.length} candidatos)`);
-						return {
-							candidatos: resultado,
-							origem: local.nome,
-							total: resultado.length
-						};
-					}
-				} catch (error) {
-					console.warn(`⚠️ Erro ao verificar ${local.nome}:`, error.message);
-				}
-			}
-			
-			// Se não encontrou, criar dados de exemplo
-			console.log('⚠️ Nenhum candidato encontrado, criando dados de exemplo...');
+			// Criar exemplos se não encontrou
+			console.log('⚠️ Criando candidatos de exemplo...');
 			const candidatosExemplo = [
-				{ id: 0, nome: 'João Silva', origem: 'exemplo' },
-				{ id: 1, nome: 'Maria Santos', origem: 'exemplo' },
-				{ id: 2, nome: 'Pedro Costa', origem: 'exemplo' }
+				{ id: 0, nome: 'João Silva (exemplo)', origem: 'gerado' },
+				{ id: 1, nome: 'Maria Santos (exemplo)', origem: 'gerado' },
+				{ id: 2, nome: 'Pedro Costa (exemplo)', origem: 'gerado' }
 			];
 			
 			return {
@@ -1674,112 +1186,70 @@
 			};
 		}
 
-		// === CRIAR SISTEMA COMPATÍVEL (SEM MEXER NO CSS) ===
-		function criarSistemaCompativel() {
-			console.log('🔧 Criando sistema compatível...');
+		// === CRIAR SISTEMA COMPATÍVEL ===
+		function criarSistema() {
+			console.log('🔧 Criando sistema...');
 			
 			try {
-				const resultado = encontrarCandidatosCompativel();
+				const resultado = encontrarCandidatos();
 				
-				// Criar window.appState se não existir
+				// Criar appState se não existir
 				if (!window.appState) {
 					window.appState = {};
 				}
 				
 				// Configurar candidatos
 				window.appState.candidatos = resultado.candidatos;
-				
-				// Criar seleção (todos selecionados)
-				const todosIds = resultado.candidatos.map((_, index) => index);
-				window.appState.candidatosSelecionados = new Set(todosIds);
-				
-				// Outras propriedades
+				window.appState.candidatosSelecionados = new Set(resultado.candidatos.map((_, index) => index));
 				window.appState.analiseSemanticaAtiva = false;
 				window.appState.templateSelecionado = null;
 				window.appState.origem = resultado.origem;
 				window.appState.criadoEm = new Date().toISOString();
 				
-				console.log('✅ Sistema compatível criado!');
-				console.log('📊 Candidatos:', resultado.total);
-				console.log('🔧 Origem:', resultado.origem);
-				
+				console.log(`✅ Sistema criado: ${resultado.total} candidatos de ${resultado.origem}`);
 				return true;
 				
 			} catch (error) {
-				console.error('❌ Erro ao criar sistema compatível:', error);
+				console.error('❌ Erro ao criar sistema:', error);
 				return false;
 			}
 		}
 
-		// === PROTEÇÃO ESPECÍFICA PARA CARDS DE MODO (COMPLEMENTO AO SEU CSS) ===
-		function adicionarProtecaoCardsMinima() {
-			console.log('🛡️ Adicionando proteção mínima aos cards de modo...');
+		// === PROTEÇÃO PARA CARDS (COMPATÍVEL COM SEU CSS) ===
+		function protegerCards() {
+			console.log('🛡️ Protegendo cards...');
 			
 			try {
-				// Verificar se já existe proteção
-				const protecaoExistente = document.getElementById('protecao-cards-modo');
-				if (protecaoExistente) {
-					protecaoExistente.remove();
-				}
-				
-				// CSS mínimo e específico
 				const style = document.createElement('style');
-				style.id = 'protecao-cards-modo';
+				style.id = 'protecao-cards-limpa';
 				style.innerHTML = `
-					/* === PROTEÇÃO ESPECÍFICA PARA CARDS DE MODO === */
-					/* (Complemento ao seu CSS existente) */
-					
+					/* === PROTEÇÃO MÍNIMA COMPATÍVEL === */
 					#modo-tradicional, #modo-semantico {
-						/* Proteção contra invisibilidade */
 						display: block !important;
 						visibility: visible !important;
 						opacity: 1 !important;
-						
-						/* Manter suas cores/estilos existentes */
 						background-color: white;
 						min-height: 60px;
-						
-						/* Não sobrescrever outros estilos */
-						transition: inherit;
-						border-radius: inherit;
-						padding: inherit;
-						margin: inherit;
 					}
 					
-					/* Proteção contra background completamente transparente */
-					#modo-tradicional[style*="background: transparent"],
-					#modo-tradicional[style*="background-color: transparent"],
-					#modo-semantico[style*="background: transparent"],
-					#modo-semantico[style*="background-color: transparent"] {
+					/* Proteger contra transparente */
+					#modo-tradicional[style*="transparent"],
+					#modo-semantico[style*="transparent"] {
 						background-color: white !important;
-					}
-					
-					/* Garantir que conteúdo seja visível */
-					#modo-tradicional *,
-					#modo-semantico * {
-						visibility: visible;
-						opacity: 1;
-					}
-					
-					/* Manter compatibilidade com seus estilos hover */
-					#modo-tradicional:hover,
-					#modo-semantico:hover {
-						/* Seus estilos hover serão mantidos */
 					}
 				`;
 				
 				document.head.appendChild(style);
-				
-				console.log('✅ Proteção específica adicionada (compatível com seu CSS)');
+				console.log('✅ Proteção aplicada');
 				
 			} catch (error) {
-				console.error('❌ Erro ao adicionar proteção:', error);
+				console.error('❌ Erro na proteção:', error);
 			}
 		}
 
-		// === MONITORAMENTO EM TEMPO REAL (SEM CSS) ===
-		function iniciarMonitoramentoCards() {
-			console.log('👁️ Iniciando monitoramento dos cards de modo...');
+		// === MONITORAMENTO INTELIGENTE ===
+		function monitorarCards() {
+			console.log('👁️ Iniciando monitoramento...');
 			
 			try {
 				const observer = new MutationObserver(function(mutations) {
@@ -1790,29 +1260,26 @@
 							if (elemento.id === 'modo-tradicional' || elemento.id === 'modo-semantico') {
 								const style = elemento.style;
 								
-								// Verificar se ficou invisível
+								// Verificar problemas
 								if (style.display === 'none' || 
 									style.visibility === 'hidden' || 
 									style.opacity === '0' ||
-									style.backgroundColor === 'transparent' ||
-									style.background === 'transparent') {
+									style.backgroundColor === 'transparent') {
 									
-									console.log(`⚠️ Card ${elemento.id} ficou invisível, corrigindo...`);
+									console.log(`⚠️ Corrigindo ${elemento.id}...`);
 									
-									// Correção mínima
+									// Corrigir
 									if (style.display === 'none') style.display = 'block';
 									if (style.visibility === 'hidden') style.visibility = 'visible';
 									if (style.opacity === '0') style.opacity = '1';
-									if (style.backgroundColor === 'transparent' || style.background === 'transparent') {
-										style.backgroundColor = 'white';
-									}
+									if (style.backgroundColor === 'transparent') style.backgroundColor = 'white';
 								}
 							}
 						}
 					});
 				});
 				
-				// Observar os cards de modo
+				// Observar elementos
 				const modoTradicional = document.getElementById('modo-tradicional');
 				const modoSemantico = document.getElementById('modo-semantico');
 				
@@ -1836,24 +1303,24 @@
 			}
 		}
 
-		// === NOVA FUNÇÃO DE ANÁLISE (COMPATÍVEL) ===
+		// === FUNÇÃO PRINCIPAL DE ANÁLISE ===
 		window.iniciarAnaliseCorrigida = function() {
-			console.log('🚀 === ANÁLISE COMPATÍVEL COM SEU SISTEMA ===');
+			console.log('🚀 === ANÁLISE LIMPA ===');
 			
 			try {
-				// 1. Garantir sistema de candidatos
+				// 1. Garantir sistema
 				if (!window.appState || !window.appState.candidatos || window.appState.candidatos.length === 0) {
-					console.log('🔧 Configurando sistema de candidatos...');
-					const sucesso = criarSistemaCompativel();
+					console.log('🔧 Criando sistema...');
+					const sucesso = criarSistema();
 					if (!sucesso) {
-						alert('❌ Não foi possível configurar o sistema de candidatos.');
+						alert('❌ Erro ao configurar candidatos.');
 						return;
 					}
 				}
 				
 				// 2. Verificar templates
 				const sistema = window.sistemaTemplates;
-				if (!sistema || !sistema.inicializado) {
+				if (!sistema?.inicializado) {
 					alert('❌ Sistema de templates não inicializado. Recarregue a página.');
 					return;
 				}
@@ -1868,25 +1335,24 @@
 					return;
 				}
 				
-				console.log('✅ Templates validados');
+				console.log('✅ Templates OK');
 				
 				// 3. Validar candidatos
 				const candidatos = window.appState.candidatos;
-				const selecionados = window.appState.candidatosSelecionados;
-				
 				if (!candidatos || candidatos.length === 0) {
 					alert('⚠️ Nenhum candidato encontrado. Faça upload dos CVs primeiro.');
 					return;
 				}
 				
-				if (!selecionados || selecionados.size === 0) {
-					console.log('🔄 Selecionando todos os candidatos automaticamente...');
+				// Garantir seleção
+				if (!window.appState.candidatosSelecionados || window.appState.candidatosSelecionados.size === 0) {
+					console.log('🔄 Selecionando todos automaticamente...');
 					window.appState.candidatosSelecionados = new Set(candidatos.map((_, index) => index));
 				}
 				
-				console.log(`✅ Candidatos validados: ${candidatos.length} total, ${window.appState.candidatosSelecionados.size} selecionados`);
+				console.log(`✅ Candidatos: ${candidatos.length} total, ${window.appState.candidatosSelecionados.size} selecionados`);
 				
-				// 4. Preparar dados para análise
+				// 4. Preparar dados
 				const templateData = {
 					id: sistema.templateSelecionado,
 					nome: sistema.templatesDisponiveis[sistema.modoAtual][sistema.templateSelecionado].nome,
@@ -1895,7 +1361,7 @@
 					tipo: sistema.modoAtual === 'semantico' ? 'semantico' : 'tradicional'
 				};
 				
-				// 5. Configurar sistema global (compatível com seu app.js)
+				// 5. Configurar sistema global
 				if (!window.templates) {
 					window.templates = {};
 				}
@@ -1908,16 +1374,15 @@
 				console.log('🧠 Tipo:', templateData.tipo);
 				console.log('⚙️ Critérios:', Object.keys(templateData.criterios).length);
 				console.log('👥 Candidatos:', candidatos.length);
-				console.log('✅ Selecionados:', window.appState.candidatosSelecionados.size);
 				
-				// 6. Chamar sua função original do app.js
+				// 6. Chamar análise original
 				if (typeof iniciarAnalise === 'function') {
-					console.log('📊 === CHAMANDO SUA FUNÇÃO ORIGINAL ===');
+					console.log('📊 === CHAMANDO ANÁLISE ORIGINAL ===');
 					iniciarAnalise();
 				} else {
 					console.error('❌ Função iniciarAnalise não encontrada');
 					
-					// Procurar funções similares
+					// Buscar funções similares
 					const funcoesSimilares = Object.keys(window).filter(key => 
 						typeof window[key] === 'function' && 
 						key.toLowerCase().includes('analise')
@@ -1926,73 +1391,61 @@
 					if (funcoesSimilares.length > 0) {
 						alert(`❌ Função 'iniciarAnalise' não encontrada.\n\nFunções similares: ${funcoesSimilares.join(', ')}`);
 					} else {
-						alert('❌ Nenhuma função de análise encontrada. Verifique seu app.js');
+						alert('❌ Nenhuma função de análise encontrada. Verifique app.js');
 					}
 				}
 				
 			} catch (error) {
-				console.error('❌ ERRO NA ANÁLISE:', error);
-				alert(`❌ Erro na análise: ${error.message}`);
+				console.error('❌ ERRO:', error);
+				alert(`❌ Erro: ${error.message}`);
 			}
 		};
 
-		// === FUNÇÕES DE TESTE E DEBUG ===
-		window.testarSistemaCompleto = function() {
-			console.log('🧪 === TESTE DO SISTEMA COMPLETO ===');
+		// === FUNÇÕES DE TESTE ===
+		window.testarSistema = function() {
+			console.log('🧪 === TESTE SISTEMA ===');
 			
 			const info = {
-				// Sistema
-				sistemaTemplates: !!(window.sistemaTemplates && window.sistemaTemplates.inicializado),
+				sistemaTemplates: !!(window.sistemaTemplates?.inicializado),
 				templateSelecionado: window.sistemaTemplates?.templateSelecionado || 'nenhum',
 				modoAtual: window.sistemaTemplates?.modoAtual || 'indefinido',
-				
-				// Candidatos
-				appStateExiste: !!window.appState,
 				candidatosTotal: window.appState?.candidatos?.length || 0,
 				candidatosSelecionados: window.appState?.candidatosSelecionados?.size || 0,
-				origemCandidatos: window.appState?.origem || 'desconhecida',
-				
-				// Funções
 				funcaoAnalise: typeof window.iniciarAnalise,
 				funcaoCorrigida: typeof window.iniciarAnaliseCorrigida,
-				
-				// Visual
-				cardTradicional: !!document.getElementById('modo-tradicional'),
-				cardSemantico: !!document.getElementById('modo-semantico'),
-				protecaoAtiva: !!document.getElementById('protecao-cards-modo'),
-				monitoramentoAtivo: !!window.observerCards
+				cardsExistem: !!(document.getElementById('modo-tradicional') && document.getElementById('modo-semantico'))
 			};
 			
 			console.table(info);
 			
-			let resultado = '🧪 TESTE COMPLETO\n\n';
-			resultado += `🔧 Sistema Templates: ${info.sistemaTemplates ? '✅' : '❌'}\n`;
-			resultado += `📋 Template: ${info.templateSelecionado}\n`;
+			let resultado = '🧪 TESTE\n\n';
+			resultado += `🔧 Templates: ${info.sistemaTemplates ? '✅' : '❌'}\n`;
+			resultado += `📋 Selecionado: ${info.templateSelecionado}\n`;
 			resultado += `📊 Modo: ${info.modoAtual}\n`;
 			resultado += `👥 Candidatos: ${info.candidatosTotal}\n`;
 			resultado += `✅ Selecionados: ${info.candidatosSelecionados}\n`;
-			resultado += `🎯 Análise Original: ${info.funcaoAnalise}\n`;
-			resultado += `🔧 Análise Corrigida: ${info.funcaoCorrigida}\n`;
-			resultado += `🛡️ Proteção Cards: ${info.protecaoAtiva ? '✅' : '❌'}\n`;
-			resultado += `👁️ Monitoramento: ${info.monitoramentoAtivo ? '✅' : '❌'}\n\n`;
+			resultado += `🎯 Análise: ${info.funcaoAnalise}\n`;
+			resultado += `🔧 Corrigida: ${info.funcaoCorrigida}\n`;
+			resultado += `🎨 Cards: ${info.cardsExistem ? '✅' : '❌'}\n\n`;
 			
 			if (!info.sistemaTemplates) {
-				resultado += '❌ ERRO: Sistema de templates não inicializado';
+				resultado += '❌ Sistema templates não iniciado';
 			} else if (info.candidatosTotal === 0) {
-				resultado += '⚠️ AVISO: Criando candidatos automaticamente...';
-				criarSistemaCompativel();
+				resultado += '⚠️ Nenhum candidato, criando automaticamente...';
+				criarSistema();
+				resultado += '\n✅ Candidatos criados!';
 			} else if (info.funcaoAnalise !== 'function') {
-				resultado += '❌ ERRO: Função iniciarAnalise não encontrada no app.js';
+				resultado += '❌ Função iniciarAnalise não encontrada';
 			} else {
-				resultado += '🎉 SISTEMA FUNCIONANDO!';
+				resultado += '🎉 TUDO OK!';
 			}
 			
 			alert(resultado);
 			return info;
 		};
 
-		window.corrigirCardsApenasJavaScript = function() {
-			console.log('🔧 Corrigindo cards apenas por JavaScript...');
+		window.corrigirCards = function() {
+			console.log('🔧 Corrigindo cards manualmente...');
 			
 			const modoTradicional = document.getElementById('modo-tradicional');
 			const modoSemantico = document.getElementById('modo-semantico');
@@ -2001,14 +1454,11 @@
 				if (elemento) {
 					const computedStyle = window.getComputedStyle(elemento);
 					
-					// Verificar se está invisível ou com problemas
 					if (computedStyle.display === 'none' ||
 						computedStyle.visibility === 'hidden' ||
-						computedStyle.opacity === '0' ||
-						computedStyle.backgroundColor === 'transparent') {
+						computedStyle.opacity === '0') {
 						
 						console.log(`⚠️ Corrigindo ${elemento.id}...`);
-						
 						elemento.style.display = 'block';
 						elemento.style.visibility = 'visible';
 						elemento.style.opacity = '1';
@@ -2017,39 +1467,68 @@
 				}
 			});
 			
-			alert('🔧 Correção JavaScript aplicada nos cards de modo');
+			alert('🔧 Correção manual aplicada');
 		};
 
-		// === APLICAÇÃO AUTOMÁTICA (COMPATÍVEL) ===
-		setTimeout(() => {
+		window.resetarTudo = function() {
+			console.log('🔄 Resetando sistema...');
+			
 			try {
-				console.log('🔄 === APLICAÇÃO AUTOMÁTICA COMPATÍVEL ===');
+				// Criar sistema
+				criarSistema();
 				
-				// 1. Criar sistema se necessário
-				if (!window.appState || !window.appState.candidatos) {
-					criarSistemaCompativel();
-				}
+				// Proteger cards
+				protegerCards();
 				
-				// 2. Adicionar proteção mínima
-				adicionarProtecaoCardsMinima();
+				// Iniciar monitoramento
+				monitorarCards();
 				
-				// 3. Iniciar monitoramento
-				iniciarMonitoramentoCards();
-				
-				console.log('✅ === SISTEMA COMPATÍVEL CARREGADO ===');
-				console.log('🧪 Teste: testarSistemaCompleto()');
-				console.log('🔧 Correção manual: corrigirCardsApenasJavaScript()');
+				alert('🔄 SISTEMA RESETADO!\n\n✅ Candidatos criados\n✅ Cards protegidos\n✅ Monitoramento ativo');
 				
 			} catch (error) {
-				console.error('❌ Erro na aplicação automática:', error);
+				console.error('❌ Erro no reset:', error);
+				alert('❌ Erro no reset: ' + error.message);
+			}
+		};
+
+		// === APLICAÇÃO AUTOMÁTICA ===
+		setTimeout(() => {
+			try {
+				console.log('🔄 === APLICAÇÃO AUTOMÁTICA ===');
+				
+				// Criar sistema se necessário
+				if (!window.appState?.candidatos) {
+					criarSistema();
+				}
+				
+				// Proteger cards
+				protegerCards();
+				
+				// Iniciar monitoramento
+				monitorarCards();
+				
+				console.log('✅ === SISTEMA LIMPO CARREGADO ===');
+				console.log('🧪 Teste: testarSistema()');
+				console.log('🔧 Corrigir: corrigirCards()');
+				console.log('🔄 Reset: resetarTudo()');
+				
+			} catch (error) {
+				console.error('❌ Erro na aplicação:', error);
 			}
 		}, 1000);
 
-		console.log('✅ === CORREÇÃO CIRÚRGICA CARREGADA ===');
-		console.log('📋 Compatível com seu CSS existente');
-		console.log('🛡️ Proteção mínima adicionada');
-		console.log('👁️ Monitoramento em tempo real ativo');
+		console.log('✅ === VERSÃO LIMPA CARREGADA ===');
+		console.log('🔧 Sem duplicações ou conflitos');
+		console.log('🛡️ Compatível com seu CSS');
+		console.log('🧪 Funções: testarSistema(), corrigirCards(), resetarTudo()');
 			
+			
+			
+	
+	
+	
+	
+	
 			
 			
 			
